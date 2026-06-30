@@ -28,12 +28,15 @@ Support inboxes that serve multiple departments quickly become a bottleneck — 
 5. **Review the classifier prompt** — Open the `Email Classifier Agent` node and confirm the four department names in the system prompt match the categories you want to route into (default: Technical, HR, Marketing, Finance).
 6. **Activate the workflow** — Toggle the workflow to Active. It polls the connected Gmail inbox every minute for new emails.
 
-## Classifier prompt used
+## Basic LLM Chaain prompt used
 
 **System message** (`Email Classifier Agent` node):
 
 ```
-you are Richard, an email classification assistant.
+### ROLE
+you are Richard, an intelligent email classifier for [company] Store that classifies emails based on context, not just keywords.
+
+
 
 ##Task
 
@@ -49,6 +52,22 @@ Return the result only in a valid JSON object with these keys:
 - sender: same sender text received
 
 Do not include any explanations or extra text. Return JSON only
+
+### CONFIDENCE SCORING
+Assign a confidence score between 0.00 and 1.00 based on how certain you are on your classification:
+
+0.75 - 1.00 → High Confidence: clear intent, route directly
+0.00 - 0.74 → Risky: unclear intent, default label must be Office/Admin
+
+### RULES
+If confidence is below 0.75, you MUST setthe label to "Office/Admin"
+Never guess -- when in doubt, use Office/Admin
+Ignore email signatures, greetings, and formatting
+Focus only on the core intent of the message
+Do not rely on KEYWORDS alone, analyze email context as well
+OUTPUT
+Return this JSON: {"label": "Department Name", "confidence": 0.00} From: {{ $json.From }} Subject: {{ $json.Subject }} Body: {{ $json.Email_snippet }} Received: {{ $json.Received_at }} Message_id: {{ $json.Message_id }}
+
 ```
 
 **User message passed to the agent**:
