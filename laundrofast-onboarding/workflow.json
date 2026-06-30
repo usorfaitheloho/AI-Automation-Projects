@@ -1,0 +1,563 @@
+{
+  "name": "Laundrofast",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Laundrofast problem statement\nWe are **Laundrofast**, a laundromat business looking to build an automated system in need of a skilled freelancer.\n\nWe have a form containing customer name, contact number, email, subscription type (One-Time and Recurring), and subscription plan (Basic, Standard, and Premium).\n\nWe want a system where everyone gets a welcome email when they fill a form, the details they filled are submitted in a CRM. Then, regardless of their subscription plan, everyone that is opting for One-Time gets sent to FACTORY A email (their name, email, and subscription type only). Everyone choosing recurring payment is sent to FACTORY B email (their name, email, and subscription type only).\n\nNow for those that are premium and recurring, all their details should be sent to our VIP LUXURY TEAM email, while those that are premium and one-time should have all their details sent to our EXPRESS DELUXE TEAM email.\n to edit me. [Guide](https://docs.n8n.io/workflows/components/sticky-notes/)",
+        "width": 672
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -448,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "fec5e22c-0e7a-47af-b5d6-fc128d0b3156",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "66dbd51d-da51-40bd-9d54-8c3f129aab35",
+              "leftValue": "={{ $('STORE CUSTOMER DATA').item.json['Subscription  Type'] }}",
+              "rightValue": "One Time",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        832,
+        0
+      ],
+      "id": "e8087c46-8664-46ff-868f-df3a94fd881d",
+      "name": "IF ONE TIME"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1TLt1DzGH94J4epO6A6LwAWjTLT6XGJ9PZ0jrKqB37UE",
+          "mode": "list",
+          "cachedResultName": "Koka Laundromat",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TLt1DzGH94J4epO6A6LwAWjTLT6XGJ9PZ0jrKqB37UE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TLt1DzGH94J4epO6A6LwAWjTLT6XGJ9PZ0jrKqB37UE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Customer Name": "={{ $json['Customer FullName'] }}",
+            "Last Name": "={{ $json['Customer FullName'] }}",
+            "Email": "={{ $('ON FORM SUBMISSION').item.json.Email }}",
+            "Phone Number": "={{ $('ON FORM SUBMISSION').item.json['Phone Number'] }}",
+            "Subscription  Type": "={{ $('ON FORM SUBMISSION').item.json['Subscription Type'] }}",
+            "Sub Plan": "={{ $('ON FORM SUBMISSION').item.json['Subscription Plan'] }}"
+          },
+          "matchingColumns": [
+            "Customer Name"
+          ],
+          "schema": [
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Subscription  Type",
+              "displayName": "Subscription  Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Sub Plan",
+              "displayName": "Sub Plan",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        0
+      ],
+      "id": "5404b700-2059-478f-8697-e074a1450ec4",
+      "name": "STORE CUSTOMER DATA",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7a559865-ccb8-4fec-a712-a555e56fc021",
+              "name": "Customer FullName",
+              "value": "={{ $json['Customer FullName'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "4224245a-5af2-4d9f-bf8a-0e4e85bccc12",
+      "name": "EDIT FIELDS"
+    },
+    {
+      "parameters": {
+        "formTitle": "LAUNDROMAT",
+        "formDescription": "Laundromat registration form",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Customer FullName",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Phone Number",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Subscription Type",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Recurring"
+                  },
+                  {
+                    "option": "One Time"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Subscription Plan",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Basic"
+                  },
+                  {
+                    "option": "Standard"
+                  },
+                  {
+                    "option": "Premium"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ee77fa2f-a5c9-42fa-849d-439b2dd19864",
+      "name": "ON FORM SUBMISSION",
+      "webhookId": "19c69377-14ae-4613-b660-5a5bb3703469"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "Welcome To The Team",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>\n  <title>Welcome to Laundrofast</title>\n  <style>\n    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap');\n\n    * { margin: 0; padding: 0; box-sizing: border-box; }\n\n    body {\n      background-color: #e8f0fe;\n      font-family: 'DM Sans', sans-serif;\n      padding: 40px 20px;\n    }\n\n    .email-wrapper {\n      max-width: 600px;\n      margin: 0 auto;\n      background: #ffffff;\n      border-radius: 20px;\n      overflow: hidden;\n      box-shadow: 0 8px 40px rgba(26, 86, 219, 0.12);\n    }\n\n    /* \u2500\u2500 HEADER \u2500\u2500 */\n    .header {\n      background: linear-gradient(135deg, #1a56db 0%, #1e40af 60%, #1d4ed8 100%);\n      padding: 44px 40px 36px;\n      position: relative;\n      overflow: hidden;\n    }\n\n    .header::before {\n      content: '';\n      position: absolute;\n      top: -60px; right: -60px;\n      width: 220px; height: 220px;\n      border-radius: 50%;\n      background: rgba(255,255,255,0.07);\n    }\n\n    .header::after {\n      content: '';\n      position: absolute;\n      bottom: -80px; left: -40px;\n      width: 260px; height: 260px;\n      border-radius: 50%;\n      background: rgba(255,255,255,0.05);\n    }\n\n    .logo-row {\n      display: flex;\n      align-items: center;\n      gap: 10px;\n      margin-bottom: 28px;\n    }\n\n    .logo-icon {\n      width: 38px; height: 38px;\n      background: rgba(255,255,255,0.2);\n      border-radius: 10px;\n      display: flex; align-items: center; justify-content: center;\n      font-size: 20px;\n    }\n\n    .logo-text {\n      font-family: 'Syne', sans-serif;\n      font-weight: 800;\n      font-size: 22px;\n      color: #ffffff;\n      letter-spacing: -0.5px;\n    }\n\n    .header h1 {\n      font-family: 'Syne', sans-serif;\n      font-weight: 800;\n      font-size: 34px;\n      color: #ffffff;\n      line-height: 1.15;\n      letter-spacing: -0.8px;\n      position: relative;\n      z-index: 1;\n    }\n\n    .header h1 span {\n      color: #93c5fd;\n    }\n\n    .header-sub {\n      margin-top: 10px;\n      font-size: 15px;\n      color: rgba(255,255,255,0.78);\n      position: relative;\n      z-index: 1;\n    }\n\n    /* \u2500\u2500 WAVE DIVIDER \u2500\u2500 */\n    .wave {\n      display: block;\n      width: 100%;\n      background: #1a56db;\n      line-height: 0;\n    }\n    .wave svg {\n      display: block;\n      width: 100%;\n    }\n\n    /* \u2500\u2500 BODY \u2500\u2500 */\n    .body {\n      padding: 36px 40px 20px;\n    }\n\n    .greeting {\n      font-size: 17px;\n      color: #1e293b;\n      line-height: 1.6;\n      margin-bottom: 24px;\n    }\n\n    .greeting strong {\n      color: #1a56db;\n      font-weight: 600;\n    }\n\n    /* \u2500\u2500 PLAN CARD \u2500\u2500 */\n    .plan-card {\n      background: #f0f5ff;\n      border: 1.5px solid #bfdbfe;\n      border-radius: 14px;\n      padding: 24px 28px;\n      margin-bottom: 28px;\n    }\n\n    .plan-card-label {\n      font-size: 11px;\n      font-weight: 600;\n      letter-spacing: 1.2px;\n      text-transform: uppercase;\n      color: #6b7280;\n      margin-bottom: 10px;\n    }\n\n    .plan-card-title {\n      font-family: 'Syne', sans-serif;\n      font-size: 24px;\n      font-weight: 700;\n      color: #1a56db;\n      margin-bottom: 4px;\n    }\n\n    .plan-card-type {\n      font-size: 14px;\n      color: #64748b;\n      margin-bottom: 16px;\n    }\n\n    .plan-features {\n      list-style: none;\n      display: grid;\n      grid-template-columns: 1fr 1fr;\n      gap: 12px 16px;\n    }\n\n    .plan-features li {\n      display: flex;\n      align-items: flex-start;\n      gap: 10px;\n      font-size: 14px;\n      color: #374151;\n      line-height: 1.5;\n    }\n\n    .check {\n      width: 20px; height: 20px;\n      background: #1a56db;\n      border-radius: 50%;\n      display: flex; align-items: center; justify-content: center;\n      flex-shrink: 0;\n      color: white;\n      font-size: 11px;\n    }\n\n    /* \u2500\u2500 NEXT STEPS \u2500\u2500 */\n    .steps-title {\n      font-family: 'Syne', sans-serif;\n      font-weight: 700;\n      font-size: 18px;\n      color: #0f172a;\n      margin-bottom: 16px;\n    }\n\n    .steps {\n      display: flex;\n      flex-direction: column;\n      gap: 14px;\n      margin-bottom: 32px;\n    }\n\n    .step {\n      display: flex;\n      align-items: flex-start;\n      gap: 14px;\n    }\n\n    .step-num {\n      width: 32px; height: 32px;\n      min-width: 32px;\n      background: #1a56db;\n      color: #fff;\n      font-family: 'Syne', sans-serif;\n      font-weight: 700;\n      font-size: 14px;\n      border-radius: 8px;\n      display: flex; align-items: center; justify-content: center;\n      flex-shrink: 0;\n      margin-top: 2px;\n    }\n\n    .step-text {\n      flex: 1;\n    }\n\n    .step-text strong {\n      display: block;\n      font-size: 15px;\n      font-weight: 600;\n      color: #0f172a;\n      margin-bottom: 4px;\n      line-height: 1.4;\n    }\n\n    .step-text span {\n      display: block;\n      font-size: 13.5px;\n      color: #6b7280;\n      line-height: 1.6;\n    }\n\n    /* \u2500\u2500 CTA \u2500\u2500 */\n    .cta-wrapper {\n      text-align: center;\n      margin-bottom: 32px;\n    }\n\n    .cta-btn {\n      display: inline-block;\n      background: linear-gradient(135deg, #1a56db, #1d4ed8);\n      color: #ffffff !important;\n      text-decoration: none;\n      font-family: 'Syne', sans-serif;\n      font-weight: 700;\n      font-size: 15px;\n      letter-spacing: 0.3px;\n      padding: 16px 44px;\n      border-radius: 12px;\n      box-shadow: 0 4px 20px rgba(26, 86, 219, 0.35);\n    }\n\n    /* \u2500\u2500 DIVIDER \u2500\u2500 */\n    .divider {\n      height: 1px;\n      background: #e2e8f0;\n      margin: 0 40px 28px;\n    }\n\n    /* \u2500\u2500 FOOTER \u2500\u2500 */\n    .footer {\n      background: #f8faff;\n      padding: 24px 40px 32px;\n      border-top: 1px solid #e2e8f0;\n    }\n\n    .footer-logo {\n      font-family: 'Syne', sans-serif;\n      font-weight: 800;\n      font-size: 16px;\n      color: #1a56db;\n      margin-bottom: 8px;\n    }\n\n    .footer p {\n      font-size: 12.5px;\n      color: #94a3b8;\n      line-height: 1.6;\n    }\n\n    .footer a {\n      color: #1a56db;\n      text-decoration: none;\n    }\n\n    .social-row {\n      display: flex;\n      gap: 10px;\n      margin-top: 14px;\n    }\n\n    .social-btn {\n      width: 34px; height: 34px;\n      background: #e0eaff;\n      border-radius: 8px;\n      display: flex; align-items: center; justify-content: center;\n      font-size: 15px;\n      text-decoration: none;\n    }\n\n    /* \u2500\u2500 MOBILE RESPONSIVE \u2500\u2500 */\n    @media only screen and (max-width: 600px) {\n      body {\n        padding: 20px 10px;\n      }\n\n      .email-wrapper {\n        border-radius: 12px;\n      }\n\n      .header {\n        padding: 32px 24px 28px;\n      }\n\n      .header h1 {\n        font-size: 28px;\n      }\n\n      .body {\n        padding: 28px 24px 16px;\n      }\n\n      .plan-card {\n        padding: 20px;\n      }\n\n      .plan-features {\n        grid-template-columns: 1fr;\n        gap: 10px;\n      }\n\n      .steps {\n        gap: 18px;\n      }\n\n      .cta-btn {\n        font-size: 14px;\n        padding: 14px 36px;\n      }\n\n      .footer {\n        padding: 20px 24px 28px;\n      }\n\n      .divider {\n        margin: 0 24px 24px;\n      }\n    }\n  </style>\n</head>\n<body>\n\n<div class=\"email-wrapper\">\n\n  <!-- HEADER -->\n  <div class=\"header\">\n    <div class=\"logo-row\">\n      <div class=\"logo-icon\">\ud83e\udee7</div>\n      <div class=\"logo-text\">Laundrofast</div>\n    </div>\n    <h1>Welcome aboard, <br/><span>{{$json['Customer Name'].split(' ')[0] }}! \ud83d\udc4b</span></h1>\n    <p class=\"header-sub\">Your laundry journey starts right here.</p>\n  </div>\n\n  <!-- WAVE -->\n  <div class=\"wave\">\n    <svg viewBox=\"0 0 600 40\" xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"none\" height=\"40\">\n      <path d=\"M0,20 C150,40 450,0 600,20 L600,0 L0,0 Z\" fill=\"#1a56db\"/>\n      <path d=\"M0,20 C150,40 450,0 600,20 L600,40 L0,40 Z\" fill=\"#ffffff\"/>\n    </svg>\n  </div>\n\n  <!-- BODY -->\n  <div class=\"body\">\n\n    <p class=\"greeting\">\n      Hi <strong>{{$json['Customer Name'].split(' ')[0] }}</strong>,<br/> we're thrilled to have you with us! \n      Your Laundrofast account is all set up and ready to go. Here's a summary of your subscription below.\n    </p>\n\n    <!-- PLAN CARD -->\n    <div class=\"plan-card\">\n      <div class=\"plan-card-label\">Your Active Plan</div>\n      <div class=\"plan-card-title\">{{ $json['Sub Plan'] }}</div>\n      <div class=\"plan-card-type\">{{ $json['Subscription  Type'] }} Subscription</div>\n      <ul class=\"plan-features\">\n        <li><div class=\"check\">\u2713</div> Fast, reliable laundry pickup & delivery</li>\n        <li><div class=\"check\">\u2713</div> Real-time order tracking</li>\n        <li><div class=\"check\">\u2713</div> Dedicated customer support</li>\n        <li><div class=\"check\">\u2713</div> Secure & flexible payment options</li>\n      </ul>\n    </div>\n\n    <!-- NEXT STEPS -->\n    <div class=\"steps-title\">Here's what to do next</div>\n    <div class=\"steps\">\n      <div class=\"step\">\n        <div class=\"step-num\">1</div>\n        <div class=\"step-text\">\n          <strong>Schedule Your First Pickup</strong>\n          <span>Log in to your account and book a convenient pickup time that works for you.</span>\n        </div>\n      </div>\n      <div class=\"step\">\n        <div class=\"step-num\">2</div>\n        <div class=\"step-text\">\n          <strong>Prepare Your Laundry</strong>\n          <span>Sort your clothes and have them ready \u2014 we'll handle everything from there.</span>\n        </div>\n      </div>\n      <div class=\"step\">\n        <div class=\"step-num\">3</div>\n        <div class=\"step-text\">\n          <strong>Sit Back & Relax</strong>\n          <span>We'll clean, fold, and deliver your laundry fresh \u2014 right to your door.</span>\n        </div>\n      </div>\n    </div>\n\n    <!-- CTA -->\n    <div class=\"cta-wrapper\">\n      <a href=\"/cdn-cgi/l/email-protection#d6a5a3a6a6b9a4a296bab7a3b8b2a4b9b0b7a5a2f8b5b9bb\" class=\"cta-btn\">\ud83d\udcde Contact Us</a>\n    </div>\n\n  </div>\n\n  <div class=\"divider\"></div>\n\n  <!-- FOOTER -->\n  <div class=\"footer\">\n    <div class=\"footer-logo\">\ud83e\udee7 Laundrofast</div>\n    <p>\n      Questions? Reach us at <a href=\"/cdn-cgi/l/email-protection#bbc8cecbcbd4c9cffbd7daced5dfc9d4dddac8cf95d8d4d6\"><span class=\"__cf_email__\" data-cfemail=\"1a696f6a6a75686e5a767b6f747e68757c7b696e34797577\">[email&#160;protected]</span></a><br/>\n      You're receiving this because you signed up at Laundrofast.<br/>\n      \u00a9 2026 Laundrofast. All rights reserved.\n    </p>\n    <div class=\"social-",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "2fc91c70-7080-4f9d-95e6-dfecabb8cb9d",
+      "name": "SEND A MESSAGE",
+      "webhookId": "4fa986dc-93a9-49b8-90d1-97626bb32624",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "test-recipient@example.com",
+        "subject": "New Member Alert",
+        "message": "=<!DOCTYPE html> <html lang=\"en\"> <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>   <title>New One-Time Order - Factory A</title>   <style>     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap');      * { margin: 0; padding: 0; box-sizing: border-box; }      body {       background-color: #f1f5f9;       font-family: 'DM Sans', sans-serif;       padding: 40px 20px;     }      .email-wrapper {       max-width: 600px;       margin: 0 auto;       background: #ffffff;       border-radius: 20px;       overflow: hidden;       box-shadow: 0 8px 40px rgba(15, 23, 42, 0.1);     }      /* \u2500\u2500 HEADER \u2500\u2500 */     .header {       background: linear-gradient(135deg, #1a56db 0%, #1e40af 60%, #1d4ed8 100%);       padding: 44px 40px 36px;       position: relative;       overflow: hidden;     }      .header::before {       content: '';       position: absolute;       top: -60px; right: -60px;       width: 220px; height: 220px;       border-radius: 50%;       background: rgba(255,255,255,0.05);     }      .header::after {       content: '';       position: absolute;       bottom: -80px; left: -40px;       width: 260px; height: 260px;       border-radius: 50%;       background: rgba(255,255,255,0.03);     }      .logo-row {       display: flex;       align-items: center;       gap: 10px;       margin-bottom: 20px;     }      .logo-icon {       width: 38px; height: 38px;       background: rgba(255,255,255,0.15);       border-radius: 10px;       display: flex; align-items: center; justify-content: center;       font-size: 20px;     }      .logo-text {       font-family: 'Syne', sans-serif;       font-weight: 800;       font-size: 22px;       color: #ffffff;       letter-spacing: -0.5px;     }      .alert-badge {       display: inline-flex;       align-items: center;       gap: 6px;       background: rgba(147, 197, 253, 0.2);       border: 1.5px solid rgba(147, 197, 253, 0.4);       color: #dbeafe;       font-size: 11px;       font-weight: 600;       letter-spacing: 0.8px;       text-transform: uppercase;       padding: 6px 12px;       border-radius: 20px;       margin-bottom: 16px;       position: relative;       z-index: 1;     }      .header h1 {       font-family: 'Syne', sans-serif;       font-weight: 800;       font-size: 32px;       color: #ffffff;       line-height: 1.2;       letter-spacing: -0.8px;       position: relative;       z-index: 1;       margin-bottom: 8px;     }      .header h1 span {       color: #94a3b8;     }      .header-sub {       font-size: 15px;       color: rgba(255,255,255,0.7);       position: relative;       z-index: 1;     }      /* \u2500\u2500 WAVE DIVIDER \u2500\u2500 */     .wave {       display: block;       width: 100%;       background: #1a56db;       line-height: 0;     }     .wave svg {       display: block;       width: 100%;     }      /* \u2500\u2500 BODY \u2500\u2500 */     .body {       padding: 36px 40px 20px;     }      .intro {       font-size: 15px;       color: #475569;       line-height: 1.7;       margin-bottom: 28px;     }      /* \u2500\u2500 CUSTOMER INFO CARD \u2500\u2500 */     .info-card {       background: #f8fafc;       border: 1.5px solid #e2e8f0;       border-radius: 14px;       padding: 24px 28px;       margin-bottom: 24px;     }      .info-card-label {       font-size: 11px;       font-weight: 600;       letter-spacing: 1.2px;       text-transform: uppercase;       color: #64748b;       margin-bottom: 16px;     }      .info-row {       display: flex;       justify-content: space-between;       align-items: flex-start;       padding: 12px 0;       border-bottom: 1px solid #e2e8f0;     }      .info-row:last-child {       border-bottom: none;       padding-bottom: 0;     }      .info-row:first-child {       padding-top: 0;     }      .info-label {       font-size: 13px;       font-weight: 600;       color: #475569;       min-width: 140px;     }      .info-value {       font-size: 14px;       color: #0f172a;       font-weight: 500;       text-align: right;       flex: 1;       word-break: break-word;     }      /* \u2500\u2500 ORDER DETAILS \u2500\u2500 */     .order-card {       background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);       border: 1.5px solid #fbbf24;       border-radius: 14px;       padding: 24px 28px;       margin-bottom: 28px;     }      .order-card-label {       font-size: 11px;       font-weight: 600;       letter-spacing: 1.2px;       text-transform: uppercase;       color: #92400e;       margin-bottom: 10px;     }      .order-card-title {       font-family: 'Syne', sans-serif;       font-size: 24px;       font-weight: 700;       color: #92400e;       margin-bottom: 4px;     }      .order-card-type {       font-size: 14px;       color: #b45309;       margin-bottom: 16px;     }      .order-note {       background: rgba(255,255,255,0.5);       border-left: 3px solid #f59e0b;       padding: 12px 16px;       border-radius: 6px;       font-size: 13px;       color: #78350f;       line-height: 1.6;     }      /* \u2500\u2500 ACTION ITEMS \u2500\u2500 */     .actions-title {       font-family: 'Syne', sans-serif;       font-weight: 700;       font-size: 18px;       color: #0f172a;       margin-bottom: 16px;     }      .actions {       display: flex;       flex-direction: column;       gap: 14px;       margin-bottom: 32px;     }      .action {       display: flex;       align-items: flex-start;       gap: 14px;     }      .action-icon {       width: 32px; height: 32px;       min-width: 32px;       background: #1a56db;       color: #fff;       font-size: 16px;       border-radius: 8px;       display: flex; align-items: center; justify-content: center;       flex-shrink: 0;       margin-top: 2px;     }      .action-text {       flex: 1;     }      .action-text strong {       display: block;       font-size: 15px;       font-weight: 600;       color: #0f172a;       margin-bottom: 4px;       line-height: 1.4;     }      .action-text span {       display: block;       font-size: 13.5px;       color: #64748b;       line-height: 1.6;     }      /* \u2500\u2500 TIMESTAMP \u2500\u2500 */     .timestamp {       background: #f1f5f9;       border-radius: 10px;       padding: 14px 18px;       margin-bottom: 24px;       text-align: center;     }      .timestamp-label {       font-size: 11px;       font-weight: 600;       letter-spacing: 1px;       text-transform: uppercase;       color: #64748b;       margin-bottom: 4px;     }      .timestamp-value {       font-family: 'Syne', sans-serif;       font-size: 15px;       font-weight: 600;       color: #0f172a;     }      /* \u2500\u2500 DIVIDER \u2500\u2500 */     .divider {       height: 1px;       background: #e2e8f0;       margin: 0 40px 28px;     }      /* \u2500\u2500 FOOTER \u2500\u2500 */     .footer {       background: #f8fafc;       padding: 24px 40px 32px;       border-top: 1px solid #e2e8f0;     }      .footer-logo {       font-family: 'Syne', sans-serif;       font-weight: 800;       font-size: 16px;       color: #1a56db;       margin-bottom: 8px;     }      .footer p {       font-size: 12.5px;       color: #94a3b8;       line-height: 1.6;     }      .footer a {       color: #1a56db;       text-decoration: none;       font-weight: 500;     }      /* \u2500\u2500 MOBILE RESPONSIVE \u2500\u2500 */     @media only screen and (max-width: 600px) {       body {         padding: 20px 10px;       }        .email-wrapper {         border-radius: 12px;       }        .header {         padding: 32px 24px 28px;       }        .header h1 {         font-size: 26px;       }        .body {         padding: 28px 24px 16px;       }        .info-card, .order-card {         padding: 20px;       }        .info-row {         flex-direction: column;         gap: 4px;       }        .info-label {         min-width: auto;       }        .info-value {         text-align: left;       }        .actions {         gap: 18px;       }        .footer {         padding: 20px 24px 28px;       }        .divider {         margin: 0 24px 24px;       }     }   </style> </head> <body>  <div class=\"email-wrapper\">    <!-- HEADER -->   <div class=\"header\">     <div class=\"logo-row\">       <div class=\"logo-icon\">\ud83c\udfed</div>       <div class=\"logo-text\">Factory A</div>     </div>     <div class=\"alert-badge\">       \u26a1 New Order Alert     </div>     <h1>Recurring Order<br/><span>Received</span></h1>     <p class=\"header-sub\">A new customer has placed a recurring laundry order</p>   </div>    <!-- WAVE -->   <div class=\"wave\">     <svg viewBox=\"0 0 600 40\" xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"none\" height=\"40\">       <path d=\"M0,20 C150,40 450,0 600,20 L600,0 L0,0 Z\" fill=\"#1a56db\"/>       <path d=\"M0,20 C150,40 450,0 600,20 L600,40 L0,40 Z\" fill=\"#ffffff\"/>     </svg>   </div>    <!-- BODY -->   <div class=\"body\">      <p class=\"intro\">       A new customer has signed up for a <strong>Recurring subscription</strong> with Laundrofast.        Please review the details below and prepare for order processing.     </p>      <!-- CUSTOMER INFO -->     <div class=\"info-card\">       <div class=\"info-card-label\">Customer Information</div>       <div class=\"info-row\">         <div class=\"info-label\">Full Name</div>         <div class=\"info-value\">{{ $('STORE CUSTOMER DATA').item.json['Customer Name'] }}</div>       </div>       <div class=\"info-row\">         <div class=\"info-label\">Email Address</div>         <div class=\"info-value\">{{ $('STORE CUSTOMER DATA').item.json.Email }}</div>       </div>       <div class=\"info-row\">         <div class=\"info-label\">Phone Number</div>         <div class=\"info-value\">{{ $('STORE CUSTOMER DATA').item.json['Phone Number'] }}</div>       </div>       <div class=\"info-row\">         <div class=\"info-label\">Subscription Plan</div>         <div class=\"info-value\">{{ $('STORE CUSTOMER DATA').item.json['Sub Plan'] }}</div>       </div>     </div>      <!-- ORDER DETAILS -->     <div class=\"order-card\">       <div class=\"order-card-label\">Order Type</div>       <div class=\"order-card-title\">{{ $('STORE CUSTOMER DATA').item.json['Subscription  Type'] }}</div>       <div class=\"order-card-type\">Recurring Service</div>       <div class=\"order-note\">         \u26a0\ufe0f <strong>Important:</strong> This is a recurring order. Customer is not on a one-time subscription plan.          Process as a single service request.       </div>     </div>      <!-- TIMESTAMP -->     <div class=\"timestamp\">       <div class=\"timestamp-label\">Order Submitted</div>  <div class=\"timestamp-value\"></div>     </div>      <!-- ACTION ITEMS -->     <div class=\"actions-title\">Next Steps for Factory A</div>     <div class=\"actions\">       <div class=\"action\">         <div class=\"action-icon\">\u2713</div>         <div class=\"action-text\">           <strong>Confirm Order Receipt</strong>           <span>Acknowledge this order in the factory management system within 1 hour.</span>         </div>       </div>       <div class=\"action\">         <div class=\"action-icon\">\ud83d\udcde</div>         <div class=\"action-text\">           <strong>Contact Customer</strong>           <span>Reach out to schedule pickup time and confirm service details.</span>         </div>       </div>       <div class=\"action\">         <div class=\"action-icon\">\ud83d\udce6</div>         <div class=\"action-text\">           <strong>Prepare for Pickup</strong>           <span>Assign driver and prepare pickup materials for scheduled collection.</span>         </div>       </div>       <div class=\"action\">         <div class=\"action-icon\">\ud83e\uddfa</div>         <div class=\"action-text\">           <strong>Process & Complete</strong>           <span>Clean, fold, and prepare for delivery according to service standards.</span>         </div>       </div>     </div>    </div>    <div class=\"divider\"></div>    <!-- FOOTER -->   <div class=\"footer\">     <div class=\"footer-logo\">\ud83c\udfed Factory A Operations</div>     <p>       This is an automated notification from Laundrofast.<br/>       For questions, contact operations at <a href=\"mailto:ops@laundrofast.com\">ops@laundrofast.com</a><br/>       \u00a9 2026 Laundrofast Factory Management System     </p>   </div>  </div>  </body> </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        96
+      ],
+      "id": "b57df91a-bb13-4d91-b35c-0c8a853f6c61",
+      "name": "RECURRING FACTORY B",
+      "webhookId": "cefa4437-4745-41a7-afdf-210175728981",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "New User Added",
+        "message": "=<!DOCTYPE html> <html lang=\"en\"> <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>   <title>New One-Time Order - Factory A</title>   <style>     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap');      * { margin: 0; padding: 0; box-sizing: border-box; }      body {       background-color: #f1f5f9;       font-family: 'DM Sans', sans-serif;       padding: 40px 20px;     }      .email-wrapper {       max-width: 600px;       margin: 0 auto;       background: #ffffff;       border-radius: 20px;       overflow: hidden;       box-shadow: 0 8px 40px rgba(15, 23, 42, 0.1);     }      /* \u2500\u2500 HEADER \u2500\u2500 */     .header {       background: linear-gradient(135deg, #1a56db 0%, #1e40af 60%, #1d4ed8 100%);       padding: 44px 40px 36px;       position: relative;       overflow: hidden;     }      .header::before {       content: '';       position: absolute;       top: -60px; right: -60px;       width: 220px; height: 220px;       border-radius: 50%;       background: rgba(255,255,255,0.05);     }      .header::after {       content: '';       position: absolute;       bottom: -80px; left: -40px;       width: 260px; height: 260px;       border-radius: 50%;       background: rgba(255,255,255,0.03);     }      .logo-row {       display: flex;       align-items: center;       gap: 10px;       margin-bottom: 20px;     }      .logo-icon {       width: 38px; height: 38px;       background: rgba(255,255,255,0.15);       border-radius: 10px;       display: flex; align-items: center; justify-content: center;       font-size: 20px;     }      .logo-text {       font-family: 'Syne', sans-serif;       font-weight: 800;       font-size: 22px;       color: #ffffff;       letter-spacing: -0.5px;     }      .alert-badge {       display: inline-flex;       align-items: center;       gap: 6px;       background: rgba(147, 197, 253, 0.2);       border: 1.5px solid rgba(147, 197, 253, 0.4);       color: #dbeafe;       font-size: 11px;       font-weight: 600;       letter-spacing: 0.8px;       text-transform: uppercase;       padding: 6px 12px;       border-radius: 20px;       margin-bottom: 16px;       position: relative;       z-index: 1;     }      .header h1 {       font-family: 'Syne', sans-serif;       font-weight: 800;       font-size: 32px;       color: #ffffff;       line-height: 1.2;       letter-spacing: -0.8px;       position: relative;       z-index: 1;       margin-bottom: 8px;     }      .header h1 span {       color: #94a3b8;     }      .header-sub {       font-size: 15px;       color: rgba(255,255,255,0.7);       position: relative;       z-index: 1;     }      /* \u2500\u2500 WAVE DIVIDER \u2500\u2500 */     .wave {       display: block;       width: 100%;       background: #1a56db;       line-height: 0;     }     .wave svg {       display: block;       width: 100%;     }      /* \u2500\u2500 BODY \u2500\u2500 */     .body {       padding: 36px 40px 20px;     }      .intro {       font-size: 15px;       color: #475569;       line-height: 1.7;       margin-bottom: 28px;     }      /* \u2500\u2500 CUSTOMER INFO CARD \u2500\u2500 */     .info-card {       background: #f8fafc;       border: 1.5px solid #e2e8f0;       border-radius: 14px;       padding: 24px 28px;       margin-bottom: 24px;     }      .info-card-label {       font-size: 11px;       font-weight: 600;       letter-spacing: 1.2px;       text-transform: uppercase;       color: #64748b;       margin-bottom: 16px;     }      .info-row {       display: flex;       justify-content: space-between;       align-items: flex-start;       padding: 12px 0;       border-bottom: 1px solid #e2e8f0;     }      .info-row:last-child {       border-bottom: none;       padding-bottom: 0;     }      .info-row:first-child {       padding-top: 0;     }      .info-label {       font-size: 13px;       font-weight: 600;       color: #475569;       min-width: 140px;     }      .info-value {       font-size: 14px;       color: #0f172a;       font-weight: 500;       text-align: right;       flex: 1;       word-break: break-word;     }      /* \u2500\u2500 ORDER DETAILS \u2500\u2500 */     .order-card {       background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);       border: 1.5px solid #fbbf24;       border-radius: 14px;       padding: 24px 28px;       margin-bottom: 28px;     }      .order-card-label {       font-size: 11px;       font-weight: 600;       letter-spacing: 1.2px;       text-transform: uppercase;       color: #92400e;       margin-bottom: 10px;     }      .order-card-title {       font-family: 'Syne', sans-serif;       font-size: 24px;       font-weight: 700;       color: #92400e;       margin-bottom: 4px;     }      .order-card-type {       font-size: 14px;       color: #b45309;       margin-bottom: 16px;     }      .order-note {       background: rgba(255,255,255,0.5);       border-left: 3px solid #f59e0b;       padding: 12px 16px;       border-radius: 6px;       font-size: 13px;       color: #78350f;       line-height: 1.6;     }      /* \u2500\u2500 ACTION ITEMS \u2500\u2500 */     .actions-title {       font-family: 'Syne', sans-serif;       font-weight: 700;       font-size: 18px;       color: #0f172a;       margin-bottom: 16px;     }      .actions {       display: flex;       flex-direction: column;       gap: 14px;       margin-bottom: 32px;     }      .action {       display: flex;       align-items: flex-start;       gap: 14px;     }      .action-icon {       width: 32px; height: 32px;       min-width: 32px;       background: #1a56db;       color: #fff;       font-size: 16px;       border-radius: 8px;       display: flex; align-items: center; justify-content: center;       flex-shrink: 0;       margin-top: 2px;     }      .action-text {       flex: 1;     }      .action-text strong {       display: block;       font-size: 15px;       font-weight: 600;       color: #0f172a;       margin-bottom: 4px;       line-height: 1.4;     }      .action-text span {       display: block;       font-size: 13.5px;       color: #64748b;       line-height: 1.6;     }      /* \u2500\u2500 TIMESTAMP \u2500\u2500 */     .timestamp {       background: #f1f5f9;       border-radius: 10px;       padding: 14px 18px;       margin-bottom: 24px;       text-align: center;     }      .timestamp-label {       font-size: 11px;       font-weight: 600;       letter-spacing: 1px;       text-transform: uppercase;       color: #64748b;       margin-bottom: 4px;     }      .timestamp-value {       font-family: 'Syne', sans-serif;       font-size: 15px;       font-weight: 600;       color: #0f172a;     }      /* \u2500\u2500 DIVIDER \u2500\u2500 */     .divider {       height: 1px;       background: #e2e8f0;       margin: 0 40px 28px;     }      /* \u2500\u2500 FOOTER \u2500\u2500 */     .footer {       background: #f8fafc;       padding: 24px 40px 32px;       border-top: 1px solid #e2e8f0;     }      .footer-logo {       font-family: 'Syne', sans-serif;       font-weight: 800;       font-size: 16px;       color: #1a56db;       margin-bottom: 8px;     }      .footer p {       font-size: 12.5px;       color: #94a3b8;       line-height: 1.6;     }      .footer a {       color: #1a56db;       text-decoration: none;       font-weight: 500;     }      /* \u2500\u2500 MOBILE RESPONSIVE \u2500\u2500 */     @media only screen and (max-width: 600px) {       body {         padding: 20px 10px;       }        .email-wrapper {         border-radius: 12px;       }        .header {         padding: 32px 24px 28px;       }        .header h1 {         font-size: 26px;       }        .body {         padding: 28px 24px 16px;       }        .info-card, .order-card {         padding: 20px;       }        .info-row {         flex-direction: column;         gap: 4px;       }        .info-label {         min-width: auto;       }        .info-value {         text-align: left;       }        .actions {         gap: 18px;       }        .footer {         padding: 20px 24px 28px;       }        .divider {         margin: 0 24px 24px;       }     }   </style> </head> <body>  <div class=\"email-wrapper\">    <!-- HEADER -->   <div class=\"header\">     <div class=\"logo-row\">       <div class=\"logo-icon\">\ud83c\udfed</div>       <div class=\"logo-text\">Factory A</div>     </div>     <div class=\"alert-badge\">       \u26a1 New Order Alert     </div>     <h1>One-Time Order<br/><span>Received</span></h1>     <p class=\"header-sub\">A new customer has placed a one-time laundry order</p>   </div>    <!-- WAVE -->   <div class=\"wave\">     <svg viewBox=\"0 0 600 40\" xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"none\" height=\"40\">       <path d=\"M0,20 C150,40 450,0 600,20 L600,0 L0,0 Z\" fill=\"#1a56db\"/>       <path d=\"M0,20 C150,40 450,0 600,20 L600,40 L0,40 Z\" fill=\"#ffffff\"/>     </svg>   </div>    <!-- BODY -->   <div class=\"body\">      <p class=\"intro\">       A new customer has signed up for a <strong>One-Time subscription</strong> with Laundrofast.        Please review the details below and prepare for order processing.     </p>      <!-- CUSTOMER INFO -->     <div class=\"info-card\">       <div class=\"info-card-label\">Customer Information</div>       <div class=\"info-row\">         <div class=\"info-label\">Full Name</div>         <div class=\"info-value\">{{ $('ON FORM SUBMISSION').item.json['Customer FullName'] }}</div>       </div>       <div class=\"info-row\">         <div class=\"info-label\">Email Address</div>         <div class=\"info-value\">{{ $('ON FORM SUBMISSION').item.json.Email }}</div>       </div>       <div class=\"info-row\">         <div class=\"info-label\">Phone Number</div>         <div class=\"info-value\">{{ $('ON FORM SUBMISSION').item.json['Phone Number'] }}</div>       </div>       <div class=\"info-row\">         <div class=\"info-label\">Subscription Plan</div>         <div class=\"info-value\">{{ $('ON FORM SUBMISSION').item.json['Subscription Plan'] }}</div>       </div>     </div>      <!-- ORDER DETAILS -->     <div class=\"order-card\">       <div class=\"order-card-label\">Order Type</div>       <div class=\"order-card-title\">{{ $('ON FORM SUBMISSION').item.json['Subscription Type'] }}</div>       <div class=\"order-card-type\">One-Time Service</div>       <div class=\"order-note\">         \u26a0\ufe0f <strong>Important:</strong> This is a one-time order. Customer is not on a recurring subscription plan.          Process as a single service request.       </div>     </div>      <!-- TIMESTAMP -->     <div class=\"timestamp\">       <div class=\"timestamp-label\">Order Submitted</div>       <div class=\"timestamp-value\">{{ $('ON FORM SUBMISSION').item.json.submittedAt }}</div>     </div>      <!-- ACTION ITEMS -->     <div class=\"actions-title\">Next Steps for Factory A</div>     <div class=\"actions\">       <div class=\"action\">         <div class=\"action-icon\">\u2713</div>         <div class=\"action-text\">           <strong>Confirm Order Receipt</strong>           <span>Acknowledge this order in the factory management system within 1 hour.</span>         </div>       </div>       <div class=\"action\">         <div class=\"action-icon\">\ud83d\udcde</div>         <div class=\"action-text\">           <strong>Contact Customer</strong>           <span>Reach out to schedule pickup time and confirm service details.</span>         </div>       </div>       <div class=\"action\">         <div class=\"action-icon\">\ud83d\udce6</div>         <div class=\"action-text\">           <strong>Prepare for Pickup</strong>           <span>Assign driver and prepare pickup materials for scheduled collection.</span>         </div>       </div>       <div class=\"action\">         <div class=\"action-icon\">\ud83e\uddfa</div>         <div class=\"action-text\">           <strong>Process & Complete</strong>           <span>Clean, fold, and prepare for delivery according to service standards.</span>         </div>       </div>     </div>    </div>    <div class=\"divider\"></div>    <!-- FOOTER -->   <div class=\"footer\">     <div class=\"footer-logo\">\ud83c\udfed Factory A Operations</div>     <p>       This is an automated notification from Laundrofast.<br/>       For questions, contact operations at <a href=\"mailto:ops@laundrofast.com\">ops@laundrofast.com</a><br/>       \u00a9 2026 Laundrofast Factory Management System     </p>   </div>  </div>  </body> </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        -96
+      ],
+      "id": "da13b311-d725-4755-8d2b-80a21e332bf2",
+      "name": "ONE TIME FACTORY A",
+      "webhookId": "7c701791-9b43-4828-9b82-9e073ab19d11",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "a15faccc-90cc-4e42-85bf-2e0b0797b073",
+              "leftValue": "={{ $('STORE CUSTOMER DATA').item.json['Subscription  Type'] }}",
+              "rightValue": "Recurring",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "ad5c623a-4540-45b6-a82b-ac7ff40ad45c",
+              "leftValue": "={{ $('STORE CUSTOMER DATA').item.json['Sub Plan'] }}",
+              "rightValue": "Premium",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1248,
+        96
+      ],
+      "id": "dea41638-4737-41f5-b0a4-d6ca88679822",
+      "name": "PREMIUM AND RECURRING"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "9be0940c-1eb2-4e3a-9c8a-20e6a608f331",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1248,
+        -96
+      ],
+      "id": "91f06be3-bab4-4806-9d7d-7204e106b356",
+      "name": "ONE TIME AND PREMIUM"
+    },
+    {
+      "parameters": {
+        "sendTo": "your-email@example.com",
+        "subject": "Premium and One Time Customer",
+        "message": "=<!DOCTYPE html> <html lang=\"en\"> <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>   <title>Welcome to Laundrofast - Premium One-Time Service</title>   <style>     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap');      * { margin: 0; padding: 0; box-sizing: border-box; }      body {       background-color: #e8f0fe;       font-family: 'DM Sans', sans-serif;       padding: 40px 20px;     }      .email-wrapper {       max-width: 600px;       margin: 0 auto;       background: #ffffff;       border-radius: 20px;       overflow: hidden;       box-shadow: 0 8px 40px rgba(26, 86, 219, 0.12);     }      /* \u2500\u2500 HEADER \u2500\u2500 */     .header {       background: linear-gradient(135deg, #1a56db 0%, #1e40af 60%, #1d4ed8 100%);       padding: 44px 40px 36px;       position: relative;       overflow: hidden;     }      .header::before {       content: '';       position: absolute;       top: -60px; right: -60px;       width: 220px; height: 220px;       border-radius: 50%;       background: rgba(255,255,255,0.07);     }      .header::after {       content: '';       position: absolute;       bottom: -80px; left: -40px;       width: 260px; height: 260px;       border-radius: 50%;       background: rgba(255,255,255,0.05);     }      .logo-row {       display: flex;       align-items: center;       gap: 10px;       margin-bottom: 20px;     }      .logo-icon {       width: 38px; height: 38px;       background: rgba(255,255,255,0.2);       border-radius: 10px;       display: flex; align-items: center; justify-content: center;       font-size: 20px;     }      .logo-text {       font-family: 'Syne', sans-serif;       font-weight: 800;       font-size: 22px;       color: #ffffff;       letter-spacing: -0.5px;     }      .premium-badge {       display: inline-flex;       align-items: center;       gap: 6px;       background: rgba(251, 191, 36, 0.25);       border: 1.5px solid rgba(251, 191, 36, 0.5);       color: #fef3c7;       font-size: 11px;       font-weight: 600;       letter-spacing: 0.8px;       text-transform: uppercase;       padding: 6px 12px;       border-radius: 20px;       margin-bottom: 16px;       position: relative;       z-index: 1;     }      .header h1 {       font-family: 'Syne', sans-serif;       font-weight: 800;       font-size: 34px;       color: #ffffff;       line-height: 1.15;       letter-spacing: -0.8px;       position: relative;       z-index: 1;     }      .header h1 span {       color: #93c5fd;     }      .header-sub {       margin-top: 10px;       font-size: 15px;       color: rgba(255,255,255,0.78);       position: relative;       z-index: 1;     }      /* \u2500\u2500 WAVE DIVIDER \u2500\u2500 */     .wave {       display: block;       width: 100%;       background: #1a56db;       line-height: 0;     }     .wave svg {       display: block;       width: 100%;     }      /* \u2500\u2500 BODY \u2500\u2500 */     .body {       padding: 36px 40px 20px;     }      .greeting {       font-size: 17px;       color: #1e293b;       line-height: 1.6;       margin-bottom: 24px;     }      .greeting strong {       color: #1a56db;       font-weight: 600;     }      /* \u2500\u2500 PLAN CARD \u2500\u2500 */     .plan-card {       background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);       border: 2px solid #fbbf24;       border-radius: 14px;       padding: 24px 28px;       margin-bottom: 28px;       position: relative;       overflow: hidden;     }      .plan-card::before {       content: '\u2728';       position: absolute;       top: 16px;       right: 20px;       font-size: 48px;       opacity: 0.15;     }      .plan-card-label {       font-size: 11px;       font-weight: 600;       letter-spacing: 1.2px;       text-transform: uppercase;       color: #92400e;       margin-bottom: 10px;     }      .plan-card-title {       font-family: 'Syne', sans-serif;       font-size: 28px;       font-weight: 800;       color: #92400e;       margin-bottom: 4px;       display: flex;       align-items: center;       gap: 8px;     }      .plan-card-type {       font-size: 14px;       color: #b45309;       margin-bottom: 18px;     }      .plan-features {       list-style: none;       display: grid;       grid-template-columns: 1fr 1fr;       gap: 12px 16px;     }      .plan-features li {       display: flex;       align-items: flex-start;       gap: 10px;       font-size: 14px;       color: #78350f;       line-height: 1.5;       font-weight: 500;     }      .check {       width: 20px; height: 20px;       background: #f59e0b;       border-radius: 50%;       display: flex; align-items: center; justify-content: center;       flex-shrink: 0;       color: white;       font-size: 11px;     }      /* \u2500\u2500 PREMIUM PERKS \u2500\u2500 */     .perks-title {       font-family: 'Syne', sans-serif;       font-weight: 700;       font-size: 18px;       color: #0f172a;       margin-bottom: 16px;       display: flex;       align-items: center;       gap: 8px;     }      .perks {       display: flex;       flex-direction: column;       gap: 14px;       margin-bottom: 32px;     }      .perk {       display: flex;       align-items: flex-start;       gap: 14px;       background: #f8fafc;       border: 1.5px solid #e2e8f0;       border-radius: 12px;       padding: 16px 18px;     }      .perk-icon {       width: 36px; height: 36px;       min-width: 36px;       background: linear-gradient(135deg, #fbbf24, #f59e0b);       color: #fff;       font-size: 18px;       border-radius: 10px;       display: flex; align-items: center; justify-content: center;       flex-shrink: 0;     }      .perk-text {       flex: 1;     }      .perk-text strong {       display: block;       font-size: 15px;       font-weight: 600;       color: #0f172a;       margin-bottom: 4px;       line-height: 1.4;     }      .perk-text span {       display: block;       font-size: 13.5px;       color: #64748b;       line-height: 1.6;     }      /* \u2500\u2500 NEXT STEPS \u2500\u2500 */     .steps-title {       font-family: 'Syne', sans-serif;       font-weight: 700;       font-size: 18px;       color: #0f172a;       margin-bottom: 16px;     }      .steps {       display: flex;       flex-direction: column;       gap: 14px;       margin-bottom: 32px;     }      .step {       display: flex;       align-items: flex-start;       gap: 14px;     }      .step-num {       width: 32px; height: 32px;       min-width: 32px;       background: #1a56db;       color: #fff;       font-family: 'Syne', sans-serif;       font-weight: 700;       font-size: 14px;       border-radius: 8px;       display: flex; align-items: center; justify-content: center;       flex-shrink: 0;       margin-top: 2px;     }      .step-text {       flex: 1;     }      .step-text strong {       display: block;       font-size: 15px;       font-weight: 600;       color: #0f172a;       margin-bottom: 4px;       line-height: 1.4;     }      .step-text span {       display: block;       font-size: 13.5px;       color: #6b7280;       line-height: 1.6;     }      /* \u2500\u2500 CTA \u2500\u2500 */     .cta-wrapper {       text-align: center;       margin-bottom: 32px;     }      .cta-btn {       display: inline-block;       background: linear-gradient(135deg, #1a56db, #1d4ed8);       color: #ffffff !important;       text-decoration: none;       font-family: 'Syne', sans-serif;       font-weight: 700;       font-size: 15px;       letter-spacing: 0.3px;       padding: 16px 44px;       border-radius: 12px;       box-shadow: 0 4px 20px rgba(26, 86, 219, 0.35);     }      /* \u2500\u2500 DIVIDER \u2500\u2500 */     .divider {       height: 1px;       background: #e2e8f0;       margin: 0 40px 28px;     }      /* \u2500\u2500 FOOTER \u2500\u2500 */     .footer {       background: #f8faff;       padding: 24px 40px 32px;       border-top: 1px solid #e2e8f0;     }      .footer-logo {       font-family: 'Syne', sans-serif;       font-weight: 800;       font-size: 16px;       color: #1a56db;       margin-bottom: 8px;     }      .footer p {       font-size: 12.5px;       color: #94a3b8;       line-height: 1.6;     }      .footer a {       color: #1a56db;       text-decoration: none;     }      .social-row {       display: flex;       gap: 10px;       margin-top: 14px;     }      .social-btn {       width: 34px; height: 34px;       background: #e0eaff;       border-radius: 8px;       display: flex; align-items: center; justify-content: center;       font-size: 15px;       text-decoration: none;     }      /* \u2500\u2500 MOBILE RESPONSIVE \u2500\u2500 */     @media only screen and (max-width: 600px) {       body {         padding: 20px 10px;       }        .email-wrapper {         border-radius: 12px;       }        .header {         padding: 32px 24px 28px;       }        .header h1 {         font-size: 28px;       }        .body {         padding: 28px 24px 16px;       }        .plan-card {         padding: 20px;       }        .plan-features {         grid-template-columns: 1fr;         gap: 10px;       }        .perks, .steps {         gap: 18px;       }        .cta-btn {         font-size: 14px;         padding: 14px 36px;       }        .footer {         padding: 20px 24px 28px;       }        .divider {         margin: 0 24px 24px;       }     }   </style> </head> <body>  <div class=\"email-wrapper\">    <!-- HEADER -->   <div class=\"header\">     <div class=\"logo-row\">       <div class=\"logo-icon\">\ud83e\udee7</div>       <div class=\"logo-text\">Laundrofast</div>     </div>     <div class=\"premium-badge\">       \u2b50 Premium Service     </div>     <h1>Welcome aboard,<br/><span>{{ $('STORE CUSTOMER DATA').item.json['Customer Name'].split(' ')[0] }}! \ud83d\udc4b</span></h1>     <p class=\"header-sub\">Experience our premium one-time laundry service.</p>   </div>    <!-- WAVE -->   <div class=\"wave\">     <svg viewBox=\"0 0 600 40\" xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"none\" height=\"40\">       <path d=\"M0,20 C150,40 450,0 600,20 L600,0 L0,0 Z\" fill=\"#1a56db\"/>       <path d=\"M0,20 C150,40 450,0 600,20 L600,40 L0,40 Z\" fill=\"#ffffff\"/>     </svg>   </div>    <!-- BODY -->   <div class=\"body\">      <p class=\"greeting\">       Hi <strong>{{ $('STORE CUSTOMER DATA').item.json['Customer Name'].split(' ')[0] }}</strong>, <br/> Thank you for choosing our Premium service!        Your Laundrofast account is ready, and you're all set to experience our top-tier laundry care.     </p>      <!-- PLAN CARD -->     <div class=\"plan-card\">       <div class=\"plan-card-label\">Your Premium Plan</div>       <div class=\"plan-card-title\"> {{ $('STORE CUSTOMER DATA').item.json['Sub Plan'] }}\u2728</div>       <div class=\"plan-card-type\">{{ $('STORE CUSTOMER DATA').item.json['Subscription  Type'] }}Service</div>       <ul class=\"plan-features\">         <li><div class=\"check\">\u2713</div> Express 24-hour turnaround</li>         <li><div class=\"check\">\u2713</div> Premium fabric care</li>         <li><div class=\"check\">\u2713</div> White glove delivery</li>         <li><div class=\"check\">\u2713</div> Priority customer support</li>         <li><div class=\"check\">\u2713</div> Eco-friendly detergents</li>         <li><div class=\"check\">\u2713</div> Free stain treatment</li>       </ul>     </div>      <!-- PREMIUM PERKS -->     <div class=\"perks-title\">\u2728 Premium Perks Included</div>     <div class=\"perks\">       <div class=\"perk\">         <div class=\"perk-icon\">\ud83c\udfc3</div>         <div class=\"perk-text\">           <strong>Express Service</strong>           <span>Get your laundry back in just 24 hours with our expedited processing.</span>         </div>       </div>       <div class=\"perk\">         <div class=\"perk-icon\">\ud83e\uddf4</div>         <div class=\"perk-text\">           <strong>Premium Care Products</strong>           <span>We use luxury, eco-friendly detergents that are gentle on fabrics and the planet.</span>         </div>       </div>       <div class=\"perk\">         <div class=\"perk-icon\">\ud83c\udfaf</div>         <div class=\"perk-text\">           <strong>Stain Removal Expert</strong>           <span>Complimentary advanced stain treatment for those tough-to-remove marks.</span>         </div>       </div>     </div>      <!-- NEXT STEPS -->     <div class=\"steps-title\">Here's what to do next</div>     <div class=\"steps\">       <div class=\"step\">         <div class=\"step-num\">1</div>         <div class=\"step-text\">           <strong>Schedule Your Premium Pickup</strong>           <span>Choose your preferred time \u2014 we offer same-day pickup for Premium customers.</span>         </div>       </div>       <div class=\"step\">         <div class=\"step-num\">2</div>         <div class=\"step-text\">           <strong>Add Special Instructions</strong>           <span>Let us know about any fabric preferences, stains, or special handling needs.</span>         </div>       </div>       <div class=\"step\">         <div class=\"step-num\">3</div>         <div class=\"step-text\">           <strong>Enjoy White Glove Service</strong>           <span>Relax while we deliver your fresh, perfectly folded laundry right to your door.</span>         </div>       </div>     </div>      <!-- CTA -->     <div class=\"cta-wrapper\">       <a href=\"mailto:support@laundrofast.com\" class=\"cta-btn\">\ud83d\udcde Contact Us</a>     </div>    </div>    <div class=\"divider\"></div>    <!-- FOOTER -->   <div class=\"footer\">     <div class=\"footer-logo\">\ud83e\udee7 Laundrofast</div>     <p>       Questions? Reach us at <a href=\"mailto:support@laundrofast.com\">support@laundrofast.com</a><br/>       You're receiving this because you signed up for Premium service at Laundrofast.<br/>       \u00a9 2026 Laundrofast. All rights reserved.     </p>     <div class=\"social-row\">       <a class=\"social-btn\" href=\"#\">\ud83d\udcd8</a>       <a class=\"social-btn\" href=\"#\">\ud83d\udcf8</a>       <a class=\"social-btn\" href=\"#\">\ud83d\udc26</a>     </div>   </div>  </div>  </body> </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1472,
+        -112
+      ],
+      "id": "17dd3e0c-0365-4b22-9ddb-772d0ac00262",
+      "name": "ONE TIME AND PREMIUM WELCOME MESSAGE",
+      "webhookId": "843d8636-026e-47e2-90c6-45555476384d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('STORE CUSTOMER DATA').item.json.Email }}",
+        "subject": "Premium and One Time Customer",
+        "message": "=<!DOCTYPE html> <html lang=\"en\"> <head>   <meta charset=\"UTF-8\" />   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>   <title>Welcome to Laundrofast - Premium One-Time Service</title>   <style>     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Syne:wght@700;800&display=swap');      * { margin: 0; padding: 0; box-sizing: border-box; }      body {       background-color: #e8f0fe;       font-family: 'DM Sans', sans-serif;       padding: 40px 20px;     }      .email-wrapper {       max-width: 600px;       margin: 0 auto;       background: #ffffff;       border-radius: 20px;       overflow: hidden;       box-shadow: 0 8px 40px rgba(26, 86, 219, 0.12);     }      /* \u2500\u2500 HEADER \u2500\u2500 */     .header {       background: linear-gradient(135deg, #1a56db 0%, #1e40af 60%, #1d4ed8 100%);       padding: 44px 40px 36px;       position: relative;       overflow: hidden;     }      .header::before {       content: '';       position: absolute;       top: -60px; right: -60px;       width: 220px; height: 220px;       border-radius: 50%;       background: rgba(255,255,255,0.07);     }      .header::after {       content: '';       position: absolute;       bottom: -80px; left: -40px;       width: 260px; height: 260px;       border-radius: 50%;       background: rgba(255,255,255,0.05);     }      .logo-row {       display: flex;       align-items: center;       gap: 10px;       margin-bottom: 20px;     }      .logo-icon {       width: 38px; height: 38px;       background: rgba(255,255,255,0.2);       border-radius: 10px;       display: flex; align-items: center; justify-content: center;       font-size: 20px;     }      .logo-text {       font-family: 'Syne', sans-serif;       font-weight: 800;       font-size: 22px;       color: #ffffff;       letter-spacing: -0.5px;     }      .premium-badge {       display: inline-flex;       align-items: center;       gap: 6px;       background: rgba(251, 191, 36, 0.25);       border: 1.5px solid rgba(251, 191, 36, 0.5);       color: #fef3c7;       font-size: 11px;       font-weight: 600;       letter-spacing: 0.8px;       text-transform: uppercase;       padding: 6px 12px;       border-radius: 20px;       margin-bottom: 16px;       position: relative;       z-index: 1;     }      .header h1 {       font-family: 'Syne', sans-serif;       font-weight: 800;       font-size: 34px;       color: #ffffff;       line-height: 1.15;       letter-spacing: -0.8px;       position: relative;       z-index: 1;     }      .header h1 span {       color: #93c5fd;     }      .header-sub {       margin-top: 10px;       font-size: 15px;       color: rgba(255,255,255,0.78);       position: relative;       z-index: 1;     }      /* \u2500\u2500 WAVE DIVIDER \u2500\u2500 */     .wave {       display: block;       width: 100%;       background: #1a56db;       line-height: 0;     }     .wave svg {       display: block;       width: 100%;     }      /* \u2500\u2500 BODY \u2500\u2500 */     .body {       padding: 36px 40px 20px;     }      .greeting {       font-size: 17px;       color: #1e293b;       line-height: 1.6;       margin-bottom: 24px;     }      .greeting strong {       color: #1a56db;       font-weight: 600;     }      /* \u2500\u2500 PLAN CARD \u2500\u2500 */     .plan-card {       background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);       border: 2px solid #fbbf24;       border-radius: 14px;       padding: 24px 28px;       margin-bottom: 28px;       position: relative;       overflow: hidden;     }      .plan-card::before {       content: '\u2728';       position: absolute;       top: 16px;       right: 20px;       font-size: 48px;       opacity: 0.15;     }      .plan-card-label {       font-size: 11px;       font-weight: 600;       letter-spacing: 1.2px;       text-transform: uppercase;       color: #92400e;       margin-bottom: 10px;     }      .plan-card-title {       font-family: 'Syne', sans-serif;       font-size: 28px;       font-weight: 800;       color: #92400e;       margin-bottom: 4px;       display: flex;       align-items: center;       gap: 8px;     }      .plan-card-type {       font-size: 14px;       color: #b45309;       margin-bottom: 18px;     }      .plan-features {       list-style: none;       display: grid;       grid-template-columns: 1fr 1fr;       gap: 12px 16px;     }      .plan-features li {       display: flex;       align-items: flex-start;       gap: 10px;       font-size: 14px;       color: #78350f;       line-height: 1.5;       font-weight: 500;     }      .check {       width: 20px; height: 20px;       background: #f59e0b;       border-radius: 50%;       display: flex; align-items: center; justify-content: center;       flex-shrink: 0;       color: white;       font-size: 11px;     }      /* \u2500\u2500 PREMIUM PERKS \u2500\u2500 */     .perks-title {       font-family: 'Syne', sans-serif;       font-weight: 700;       font-size: 18px;       color: #0f172a;       margin-bottom: 16px;       display: flex;       align-items: center;       gap: 8px;     }      .perks {       display: flex;       flex-direction: column;       gap: 14px;       margin-bottom: 32px;     }      .perk {       display: flex;       align-items: flex-start;       gap: 14px;       background: #f8fafc;       border: 1.5px solid #e2e8f0;       border-radius: 12px;       padding: 16px 18px;     }      .perk-icon {       width: 36px; height: 36px;       min-width: 36px;       background: linear-gradient(135deg, #fbbf24, #f59e0b);       color: #fff;       font-size: 18px;       border-radius: 10px;       display: flex; align-items: center; justify-content: center;       flex-shrink: 0;     }      .perk-text {       flex: 1;     }      .perk-text strong {       display: block;       font-size: 15px;       font-weight: 600;       color: #0f172a;       margin-bottom: 4px;       line-height: 1.4;     }      .perk-text span {       display: block;       font-size: 13.5px;       color: #64748b;       line-height: 1.6;     }      /* \u2500\u2500 NEXT STEPS \u2500\u2500 */     .steps-title {       font-family: 'Syne', sans-serif;       font-weight: 700;       font-size: 18px;       color: #0f172a;       margin-bottom: 16px;     }      .steps {       display: flex;       flex-direction: column;       gap: 14px;       margin-bottom: 32px;     }      .step {       display: flex;       align-items: flex-start;       gap: 14px;     }      .step-num {       width: 32px; height: 32px;       min-width: 32px;       background: #1a56db;       color: #fff;       font-family: 'Syne', sans-serif;       font-weight: 700;       font-size: 14px;       border-radius: 8px;       display: flex; align-items: center; justify-content: center;       flex-shrink: 0;       margin-top: 2px;     }      .step-text {       flex: 1;     }      .step-text strong {       display: block;       font-size: 15px;       font-weight: 600;       color: #0f172a;       margin-bottom: 4px;       line-height: 1.4;     }      .step-text span {       display: block;       font-size: 13.5px;       color: #6b7280;       line-height: 1.6;     }      /* \u2500\u2500 CTA \u2500\u2500 */     .cta-wrapper {       text-align: center;       margin-bottom: 32px;     }      .cta-btn {       display: inline-block;       background: linear-gradient(135deg, #1a56db, #1d4ed8);       color: #ffffff !important;       text-decoration: none;       font-family: 'Syne', sans-serif;       font-weight: 700;       font-size: 15px;       letter-spacing: 0.3px;       padding: 16px 44px;       border-radius: 12px;       box-shadow: 0 4px 20px rgba(26, 86, 219, 0.35);     }      /* \u2500\u2500 DIVIDER \u2500\u2500 */     .divider {       height: 1px;       background: #e2e8f0;       margin: 0 40px 28px;     }      /* \u2500\u2500 FOOTER \u2500\u2500 */     .footer {       background: #f8faff;       padding: 24px 40px 32px;       border-top: 1px solid #e2e8f0;     }      .footer-logo {       font-family: 'Syne', sans-serif;       font-weight: 800;       font-size: 16px;       color: #1a56db;       margin-bottom: 8px;     }      .footer p {       font-size: 12.5px;       color: #94a3b8;       line-height: 1.6;     }      .footer a {       color: #1a56db;       text-decoration: none;     }      .social-row {       display: flex;       gap: 10px;       margin-top: 14px;     }      .social-btn {       width: 34px; height: 34px;       background: #e0eaff;       border-radius: 8px;       display: flex; align-items: center; justify-content: center;       font-size: 15px;       text-decoration: none;     }      /* \u2500\u2500 MOBILE RESPONSIVE \u2500\u2500 */     @media only screen and (max-width: 600px) {       body {         padding: 20px 10px;       }        .email-wrapper {         border-radius: 12px;       }        .header {         padding: 32px 24px 28px;       }        .header h1 {         font-size: 28px;       }        .body {         padding: 28px 24px 16px;       }        .plan-card {         padding: 20px;       }        .plan-features {         grid-template-columns: 1fr;         gap: 10px;       }        .perks, .steps {         gap: 18px;       }        .cta-btn {         font-size: 14px;         padding: 14px 36px;       }        .footer {         padding: 20px 24px 28px;       }        .divider {         margin: 0 24px 24px;       }     }   </style> </head> <body>  <div class=\"email-wrapper\">    <!-- HEADER -->   <div class=\"header\">     <div class=\"logo-row\">       <div class=\"logo-icon\">\ud83e\udee7</div>       <div class=\"logo-text\">Laundrofast</div>     </div>     <div class=\"premium-badge\">       \u2b50 Premium Service     </div>     <h1>Welcome aboard,<br/><span>{{ $('STORE CUSTOMER DATA').item.json['Customer Name'].split(' ')[0] }}! \ud83d\udc4b</span></h1>     <p class=\"header-sub\">Experience our premium one-time laundry service.</p>   </div>    <!-- WAVE -->   <div class=\"wave\">     <svg viewBox=\"0 0 600 40\" xmlns=\"http://www.w3.org/2000/svg\" preserveAspectRatio=\"none\" height=\"40\">       <path d=\"M0,20 C150,40 450,0 600,20 L600,0 L0,0 Z\" fill=\"#1a56db\"/>       <path d=\"M0,20 C150,40 450,0 600,20 L600,40 L0,40 Z\" fill=\"#ffffff\"/>     </svg>   </div>    <!-- BODY -->   <div class=\"body\">      <p class=\"greeting\">       Hi <strong>{{ $('STORE CUSTOMER DATA').item.json['Customer Name'].split(' ')[0] }}</strong>, <br/> thank you for choosing our Premium service!        Your Laundrofast account is ready, and you're all set to experience our top-tier laundry care.     </p>      <!-- PLAN CARD -->     <div class=\"plan-card\">       <div class=\"plan-card-label\">Your Premium Plan</div>       <div class=\"plan-card-title\"> {{ $('STORE CUSTOMER DATA').item.json['Sub Plan'] }}\u2728</div>       <div class=\"plan-card-type\">{{ $('STORE CUSTOMER DATA').item.json['Subscription  Type'] }}Service</div>       <ul class=\"plan-features\">         <li><div class=\"check\">\u2713</div> Express 24-hour turnaround</li>         <li><div class=\"check\">\u2713</div> Premium fabric care</li>         <li><div class=\"check\">\u2713</div> White glove delivery</li>         <li><div class=\"check\">\u2713</div> Priority customer support</li>         <li><div class=\"check\">\u2713</div> Eco-friendly detergents</li>         <li><div class=\"check\">\u2713</div> Free stain treatment</li>       </ul>     </div>      <!-- PREMIUM PERKS -->     <div class=\"perks-title\">\u2728 Premium Perks Included</div>     <div class=\"perks\">       <div class=\"perk\">         <div class=\"perk-icon\">\ud83c\udfc3</div>         <div class=\"perk-text\">           <strong>Express Service</strong>           <span>Get your laundry back in just 24 hours with our expedited processing.</span>         </div>       </div>       <div class=\"perk\">         <div class=\"perk-icon\">\ud83e\uddf4</div>         <div class=\"perk-text\">           <strong>Premium Care Products</strong>           <span>We use luxury, eco-friendly detergents that are gentle on fabrics and the planet.</span>         </div>       </div>       <div class=\"perk\">         <div class=\"perk-icon\">\ud83c\udfaf</div>         <div class=\"perk-text\">           <strong>Stain Removal Expert</strong>           <span>Complimentary advanced stain treatment for those tough-to-remove marks.</span>         </div>       </div>     </div>      <!-- NEXT STEPS -->     <div class=\"steps-title\">Here's what to do next</div>     <div class=\"steps\">       <div class=\"step\">         <div class=\"step-num\">1</div>         <div class=\"step-text\">           <strong>Schedule Your Premium Pickup</strong>           <span>Choose your preferred time \u2014 we offer same-day pickup for Premium customers.</span>         </div>       </div>       <div class=\"step\">         <div class=\"step-num\">2</div>         <div class=\"step-text\">           <strong>Add Special Instructions</strong>           <span>Let us know about any fabric preferences, stains, or special handling needs.</span>         </div>       </div>       <div class=\"step\">         <div class=\"step-num\">3</div>         <div class=\"step-text\">           <strong>Enjoy White Glove Service</strong>           <span>Relax while we deliver your fresh, perfectly folded laundry right to your door.</span>         </div>       </div>     </div>      <!-- CTA -->     <div class=\"cta-wrapper\">       <a href=\"mailto:support@laundrofast.com\" class=\"cta-btn\">\ud83d\udcde Contact Us</a>     </div>    </div>    <div class=\"divider\"></div>    <!-- FOOTER -->   <div class=\"footer\">     <div class=\"footer-logo\">\ud83e\udee7 Laundrofast</div>     <p>       Questions? Reach us at <a href=\"mailto:support@laundrofast.com\">support@laundrofast.com</a><br/>       You're receiving this because you signed up for Premium service at Laundrofast.<br/>       \u00a9 2026 Laundrofast. All rights reserved.     </p>     <div class=\"social-row\">       <a class=\"social-btn\" href=\"#\">\ud83d\udcd8</a>       <a class=\"social-btn\" href=\"#\">\ud83d\udcf8</a>       <a class=\"social-btn\" href=\"#\">\ud83d\udc26</a>     </div>   </div>  </div>  </body> </html>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1472,
+        80
+      ],
+      "id": "cc9c48a4-abe2-4424-acfe-778f510d8c99",
+      "name": "RECURRING AND PREMIUM WELCOME MESSAGE",
+      "webhookId": "742bdf12-584a-4b3c-9626-808491dff07b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "IF ONE TIME": {
+      "main": [
+        [
+          {
+            "node": "ONE TIME FACTORY A",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RECURRING FACTORY B",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "STORE CUSTOMER DATA": {
+      "main": [
+        [
+          {
+            "node": "SEND A MESSAGE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EDIT FIELDS": {
+      "main": [
+        [
+          {
+            "node": "STORE CUSTOMER DATA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ON FORM SUBMISSION": {
+      "main": [
+        [
+          {
+            "node": "EDIT FIELDS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SEND A MESSAGE": {
+      "main": [
+        [
+          {
+            "node": "IF ONE TIME",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RECURRING FACTORY B": {
+      "main": [
+        [
+          {
+            "node": "PREMIUM AND RECURRING",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PREMIUM AND RECURRING": {
+      "main": [
+        [
+          {
+            "node": "RECURRING AND PREMIUM WELCOME MESSAGE",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "ONE TIME FACTORY A": {
+      "main": [
+        [
+          {
+            "node": "ONE TIME AND PREMIUM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ONE TIME AND PREMIUM": {
+      "main": [
+        [
+          {
+            "node": "ONE TIME AND PREMIUM WELCOME MESSAGE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "fd446c5b-1663-4310-b4dd-d42c4cd0a388",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "36ccb4d3d65fe84b15dca4aa2b617aaf9a78a77523e69f0d36da242512b9d43a"
+  },
+  "id": "vMNqt7Yilxe8ysHo",
+  "tags": []
+}

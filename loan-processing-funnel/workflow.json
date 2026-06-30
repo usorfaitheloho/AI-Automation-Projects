@@ -1,0 +1,1490 @@
+{
+  "name": "Loan Processing Funnel",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "647b2d7e-7a72-4e3c-b740-2ce0af04d121",
+              "leftValue": "={{ $('Store CRM Data').item.json['Salary Range'] }}",
+              "rightValue": "0-500k",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1008,
+        928
+      ],
+      "id": "36796b29-9bb4-478a-9016-9159a6ec898e",
+      "name": "Is Salary range 0-500k"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1xelxmFZzNLgX1HJUKftPbukf0w67z70YeF-1u4JSKsw",
+          "mode": "list",
+          "cachedResultName": "Loan Shark ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xelxmFZzNLgX1HJUKftPbukf0w67z70YeF-1u4JSKsw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xelxmFZzNLgX1HJUKftPbukf0w67z70YeF-1u4JSKsw/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json['Full Name'] }}",
+            "Email": "={{ $json['Email Address'] }}",
+            "Salary Range": "={{ $json['Salary Range'] }}",
+            "Phone Number": "={{ $json['Phone Number'] }}",
+            "Loan Amount": "={{ $json['Loan Amount'] }}"
+          },
+          "matchingColumns": [
+            "Name"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Salary Range",
+              "displayName": "Salary Range",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Loan Amount",
+              "displayName": "Loan Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        576,
+        928
+      ],
+      "id": "9e616ae3-e3f7-4692-8764-8b1be743dc41",
+      "name": "Store CRM Data",
+      "retryOnFail": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Sheets OAuth2 API"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "Processing Request",
+        "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;margin:0 auto;font-family:'DM Sans',Arial,sans-serif;background:#ffffff;box-shadow:0 8px 40px rgba(11,31,58,0.12);\" width=\"640\">\n<!-- HEADER -->\n<tr>\n<td style=\"background:linear-gradient(135deg,#0B1F3A 0%,#1A4A7A 60%,#2E80CE 100%);padding:40px 48px 36px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr>\n<td style=\"padding-bottom:28px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n<tr>\n<td style=\"background:#C9A84C;border-radius:8px;width:44px;height:44px;text-align:center;vertical-align:middle;font-size:22px;padding:0 8px;\">\ud83c\udf0a</td>\n<td style=\"padding-left:12px;\">\n<div style=\"font-family:'Playfair Display',Georgia,serif;color:#ffffff;font-size:20px;font-weight:700;line-height:1.2;\">Blue Horizon Finance</div>\n<div style=\"color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;\">Trusted Lending Solutions</div>\n</td>\n</tr>\n</table>\n</td>\n</tr>\n<tr>\n<td style=\"padding-bottom:14px;\">\n<span style=\"display:inline-block;padding:5px 14px;border:1.5px solid rgba(201,168,76,0.6);border-radius:2px;color:#F0D98B;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;\">Application Received</span>\n</td>\n</tr>\n<tr>\n<td>\n<div style=\"font-family:'Playfair Display',Georgia,serif;color:#ffffff;font-size:28px;font-weight:600;line-height:1.3;\">We've Received Your<br/>Loan Application</div>\n</td>\n</tr>\n</table>\n</td>\n</tr>\n<!-- ACCENT BAR -->\n<tr><td style=\"height:4px;background:linear-gradient(90deg,#C9A84C,#5DADE2,#C9A84C);font-size:0;line-height:0;\">\u00a0</td></tr>\n<!-- BODY -->\n<tr>\n<td style=\"padding:40px 48px;background:#ffffff;\">\n<p style=\"font-size:16px;font-weight:600;color:#1A2634;margin-bottom:16px;\">Dear {{ $json.Name }},</p>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">Thank you for choosing <strong style=\"color:#1A2634;font-weight:600;\">Blue Horizon Finance</strong>. We have successfully received your loan application and our team is currently reviewing your submission. You can expect to hear from us within <strong style=\"color:#1A2634;font-weight:600;\">2\u20133 business days</strong>.</p>\n<!-- INFO CARD -->\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FAF8F3;border-left:4px solid #2E80CE;border-radius:0 6px 6px 0;margin:28px 0;\" width=\"100%\">\n<tr><td style=\"padding:20px 24px;\">\n<p style=\"font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:#718096;margin-bottom:12px;\">Your Application Summary</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Full Name</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $json.Name }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Email Address</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#2E80CE;text-align:right;\">{{ $json.Email }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Salary Range</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $json['Salary Range'] }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Loan Amount Requested</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#C9A84C;text-align:right;\">{{ $json['Loan Amount'] }}</td></tr>\n<tr><td style=\"padding:8px 0;font-size:14px;color:#4A5568;\">Phone Number</td><td style=\"padding:8px 0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $json['Phone Number'] }}</td></tr>\n</table>\n</td></tr>\n</table>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">Our loan specialists will assess your eligibility based on your financial profile. Should we require any additional documentation, we will reach out to you promptly.</p>\n<!-- ALERT -->\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FFF8E7;border:1px solid #F0D98B;border-radius:4px;margin:24px 0;\" width=\"100%\">\n<tr><td style=\"padding:16px 20px;font-size:14px;line-height:1.6;color:#7A5C00;\">\n<span style=\"font-size:18px;margin-right:10px;\">\u2139\ufe0f</span>Please ensure your contact details are up to date. All correspondence regarding your application will be sent to the email address above.\n        </td></tr>\n</table>\n<!-- SIGNATURE -->\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:36px;border-top:1px solid #E2E8F0;\" width=\"100%\">\n<tr><td style=\"padding-top:24px;font-size:14px;color:#4A5568;line-height:1.7;\">\n<div style=\"font-weight:700;color:#1A2634;font-size:15px;\">The Loans Team</div>\n<div style=\"color:#718096;font-size:13px;\">Blue Horizon Finance</div>\n<div>\ud83d\udcde +1 (800) 274-5678 \u00a0|\u00a0 \ud83c\udf10 www.bluehorizonfinance.com</div>\n</td></tr>\n</table>\n</td>\n</tr>\n<!-- FOOTER -->\n<tr>\n<td style=\"background:#0B1F3A;padding:28px 48px;text-align:center;\">\n<p style=\"margin-bottom:10px;\">\n<a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Privacy Policy</a>\n<a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Terms of Service</a>\n<a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Contact Us</a>\n<a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Unsubscribe</a>\n</p>\n<p style=\"color:rgba(255,255,255,0.4);font-size:11px;line-height:1.7;\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br/>123 Finance Avenue, Suite 500, New York, NY 10001</p>\n</td>\n</tr>\n</table>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        800,
+        928
+      ],
+      "id": "0625be44-896d-40d3-ac28-1b2bde81341e",
+      "name": "Send welcome email",
+      "webhookId": "2620a26b-b181-4eb8-9d2e-0e8c104bfe9f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Loan Request Rejected",
+        "emailType": "text",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Blue Horizon Finance \u2014 Not Eligible</title>\n<link href=\"https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap\" rel=\"stylesheet\">\n<style>\n  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }\n  :root {\n    --navy: #1A1A2E; --red: #C0392B; --cream: #FAF8F3; --white: #FFFFFF;\n    --text-dark: #1A2634; --text-mid: #4A5568; --text-light: #718096; --border: #E2E8F0;\n  }\n  body { font-family: 'DM Sans', sans-serif; background: #EEF2F7; color: var(--text-dark); padding: 40px 20px; }\n  .email-shell { max-width: 640px; margin: 0 auto; background: var(--white); border-radius: 2px; overflow: hidden; box-shadow: 0 8px 40px rgba(11,31,58,0.12); }\n  .email-header { background: linear-gradient(135deg, #1A1A2E 0%, #2D1B3D 60%, #4A2550 100%); padding: 40px 48px 36px; position: relative; overflow: hidden; }\n  .email-header::before { content: ''; position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(192,57,43,0.1); }\n  .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }\n  .logo-icon { width: 44px; height: 44px; background: #C9A84C; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }\n  .logo-text { font-family: 'Playfair Display', serif; color: #fff; font-size: 20px; font-weight: 700; line-height: 1.2; }\n  .logo-tagline { color: rgba(255,255,255,0.55); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }\n  .header-badge { display: inline-block; padding: 5px 14px; border: 1.5px solid rgba(255,100,100,0.5); border-radius: 2px; color: #FFB3B3; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; }\n  .email-header h1 { font-family: 'Playfair Display', serif; color: #fff; font-size: 28px; font-weight: 600; line-height: 1.3; position: relative; z-index: 1; }\n  .accent-bar { height: 4px; background: linear-gradient(90deg, #8B0000, var(--red), #8B0000); }\n  .email-body { padding: 40px 48px; }\n  .salutation { font-size: 16px; font-weight: 600; color: var(--text-dark); margin-bottom: 16px; text-transform: uppercase }\n  .body-text { font-size: 15px; line-height: 1.75; color: var(--text-mid); margin-bottom: 20px; }\n  .body-text strong { color: var(--text-dark); font-weight: 600; }\n  .info-card { background: var(--cream); border-left: 4px solid var(--red); border-radius: 0 6px 6px 0; padding: 20px 24px; margin: 28px 0; }\n  .info-card-title { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; color: var(--text-light); margin-bottom: 12px; }\n  .info-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }\n  .info-row:last-child { border-bottom: none; }\n  .info-label { color: var(--text-mid); }\n  .info-value { color: var(--text-dark); font-weight: 600; text-transform: capitalize; }\n  .info-value.red { color: var(--red); }\n  .alert-box { border-radius: 4px; padding: 16px 20px; margin: 24px 0; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.6; }\n  .alert-box.danger { background: #FDF2F2; border: 1px solid #F5C6CB; color: var(--red); }\n  .alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }\n  .cta-wrap { text-align: center; margin: 32px 0; }\n  .cta-btn { display: inline-block; padding: 14px 40px; background: #6B2D6B; color: #fff; text-decoration: none; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0.05em; border-radius: 3px; }\n  .signature { margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 14px; color: var(--text-mid); line-height: 1.7; }\n  .sig-name { font-weight: 700; color: var(--text-dark); font-size: 15px; }\n  .sig-role { color: var(--text-light); font-size: 13px; }\n  .email-footer { background: #1A1A2E; padding: 28px 48px; text-align: center; }\n  .footer-text { color: rgba(255,255,255,0.4); font-size: 11px; line-height: 1.7; }\n  .footer-links { margin-bottom: 10px; }\n  .footer-links a { color: rgba(255,255,255,0.55); text-decoration: none; margin: 0 10px; font-size: 11px; }\n  @media (max-width: 600px) { .email-header, .email-body, .email-footer { padding: 28px 24px; } .email-header h1 { font-size: 22px; } }\n</style>\n</head>\n<body>\n<div class=\"email-shell\">\n  <div class=\"email-header\">\n    <div class=\"logo-row\">\n      <div class=\"logo-icon\">\ud83c\udf0a</div>\n      <div>\n        <div class=\"logo-text\">Blue Horizon Finance</div>\n        <div class=\"logo-tagline\">Trusted Lending Solutions</div>\n      </div>\n    </div>\n    <div class=\"header-badge\">Application Status Update</div>\n    <h1>Regarding Your<br>Loan Application</h1>\n  </div>\n  <div class=\"accent-bar\"></div>\n  <div class=\"email-body\">\n    <p class=\"salutation\">Dear {{ $('Store CRM Data').item.json.Name }},</p>\n    <p class=\"body-text\">Thank you for your interest in a loan with <strong>Blue Horizon Finance</strong>. After a thorough review of your application, we regret to inform you that we are <strong>unable to proceed</strong> with your request at this time.</p>\n    <div class=\"info-card\">\n      <div class=\"info-card-title\">Application Review Details</div>\n      <div class=\"info-row\"><span class=\"info-label\">Applicant</span><span class=\"info-value\">{{ $('Store CRM Data').item.json.Name }}</span></div>\n      <div class=\"info-row\"><span class=\"info-label\">Loan Amount Requested</span><span class=\"info-value\">{{ $('Store CRM Data').item.json['Loan Amount'] }}</span></div>\n      <div class=\"info-row\"><span class=\"info-label\">Salary Range</span><span class=\"info-value\">{{ $('Store CRM Data').item.json['Salary Range'] }}</span></div>\n      <div class=\"info-row\"><span class=\"info-label\">Decision</span><span class=\"info-value red\">Not Eligible</span></div>\n    </div>\n    <p class=\"body-text\">Based on our current lending criteria, your application does not meet the minimum eligibility requirements. This decision may be influenced by factors such as income level relative to the requested loan amount, credit profile, or existing financial obligations.</p>\n    <div class=\"alert-box danger\">\n      <span class=\"alert-icon\">\u26a0\ufe0f</span>\n      <span><strong>What you can do:</strong> You may reapply after 6 months if your financial circumstances change, or explore our smaller loan products which may be more suitable for your current profile.</span>\n    </div>\n    <p class=\"body-text\">We understand this may be disappointing. Our team is available to discuss alternative financial solutions that may better fit your current situation. Please do not hesitate to contact us.</p>\n    <div class=\"cta-wrap\"><a href=\"#\" class=\"cta-btn\">Speak to an Advisor</a></div>\n    <div class=\"signature\">\n      <div class=\"sig-name\">Credit Assessment Team</div>\n      <div class=\"sig-role\">Blue Horizon Finance</div>\n      <div>\ud83d\udcde +1 (800) 274-5678 &nbsp;|&nbsp; \ud83c\udf10 www.bluehorizonfinance.com</div>\n    </div>\n  </div>\n  <div class=\"email-footer\">\n    <div class=\"footer-links\">\n      <a href=\"#\">Privacy Policy</a><a href=\"#\">Terms of Service</a><a href=\"#\">Contact Us</a><a href=\"#\">Unsubscribe</a>\n    </div>\n    <p class=\"footer-text\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br>123 Finance Avenue, Suite 500, New York, NY 10001</p>\n  </div>\n</div>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1328,
+        480
+      ],
+      "id": "51261c82-da85-4625-ba6b-d7e389e85aaa",
+      "name": "Customer Not Eligible",
+      "webhookId": "3d12b660-0337-4f3d-b466-262503644b36",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Store CRM Data').item.json['Salary Range'] }}",
+                    "rightValue": "501k-1,000,000",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "9df3a6ea-0d83-42e9-bb4c-1e2a5525397c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "501k -1000000"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4d472bdf-c2ab-418f-ab82-b957238d68ec",
+                    "leftValue": "={{ $('Store CRM Data').item.json['Salary Range'] }}",
+                    "rightValue": "1,000,000 above",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "1,000,000 above"
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1280,
+        960
+      ],
+      "id": "8322a957-0841-4dab-8778-444d5ece947b",
+      "name": "Calculate Interest"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Interest And Amount Payable Handled",
+        "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;margin:0 auto;font-family:'DM Sans',Arial,sans-serif;background:#ffffff;box-shadow:0 8px 40px rgba(11,31,58,0.12);\" width=\"640\">\n<tr>\n<td style=\"background:linear-gradient(135deg,#0A2A0A 0%,#1A4A2A 60%,#2E7A4A 100%);padding:40px 48px 36px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding-bottom:28px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"background:#C9A84C;border-radius:8px;width:44px;height:44px;text-align:center;vertical-align:middle;font-size:22px;padding:0 8px;\">\ud83c\udf0a</td>\n<td style=\"padding-left:12px;\">\n<div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:20px;font-weight:700;line-height:1.2;\">Blue Horizon Finance</div>\n<div style=\"color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;\">Trusted Lending Solutions</div>\n</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding-bottom:14px;\"><span style=\"display:inline-block;padding:5px 14px;border:1.5px solid rgba(201,168,76,0.6);border-radius:2px;color:#F0D98B;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;\">Premium Loan Offer \u2014 Action Required</span></td></tr>\n<tr><td><div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:28px;font-weight:600;line-height:1.3;\">Exclusive Loan Offer<br/>Prepared for You</div></td></tr>\n</table>\n</td>\n</tr>\n<tr><td style=\"height:4px;background:linear-gradient(90deg,#0A4A2A,#1A7A4A,#0A4A2A);font-size:0;line-height:0;\">\u00a0</td></tr>\n<tr>\n<td style=\"padding:40px 48px;background:#ffffff;\">\n<p style=\"font-size:16px;font-weight:600;color:#1A2634;margin-bottom:16px;\">Dear {{ $('Store CRM Data').item.json.Name }},</p>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">Congratulations! You qualify for our <strong style=\"color:#1A2634;\">Premium Loan Programme</strong> at <strong style=\"color:#1A2634;\">Blue Horizon Finance</strong>. As a high-value applicant, you are eligible for our preferential interest rate. Please review your personalised offer below.</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FAF8F3;border-left:4px solid #1A7A4A;border-radius:0 6px 6px 0;margin:28px 0;\" width=\"100%\">\n<tr><td style=\"padding:20px 24px;\">\n<p style=\"font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:#718096;margin-bottom:12px;\">Premium Loan Offer Details</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Applicant</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $('Store CRM Data').item.json.Name }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Loan Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#C9A84C;text-align:right;\">{{ $('Store CRM Data').item.json['Loan Amount'] }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Preferential Rate</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A7A4A;text-align:right;\">40% per annum</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Interest Payable</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#2E80CE;text-align:right;\">{{ $json['Interest Rate'] }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Repayment Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $json['Amount Payable'] }}</td></tr>\n<tr><td style=\"padding:8px 0;font-size:14px;color:#4A5568;\">Loan Tier</td><td style=\"padding:8px 0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">Premium (1M Above)</td></tr>\n</table>\n</td></tr>\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#EFF8F2;border:1px solid #A8D5B8;border-radius:4px;margin:24px 0;\" width=\"100%\">\n<tr><td style=\"padding:16px 20px;font-size:14px;line-height:1.6;color:#1A7A4A;\">\n<span style=\"font-size:18px;margin-right:10px;\">\ud83c\udf1f</span>As a premium applicant, you benefit from our <strong>reduced 40% interest rate</strong> \u2014 our most competitive rate for high-value loans. This offer is valid for <strong>48 hours</strong>.\n        </td></tr>\n</table>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">Our dedicated relationship managers will guide you through the entire process from acceptance to disbursement. We ensure a seamless and confidential experience for every premium client.</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:32px 0;\" width=\"100%\">\n\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:36px;border-top:1px solid #E2E8F0;\" width=\"100%\">\n<tr><td style=\"padding-top:24px;font-size:14px;color:#4A5568;line-height:1.7;\">\n<div style=\"font-weight:700;color:#1A2634;font-size:15px;\">Premium Loans Team</div>\n<div style=\"color:#718096;font-size:13px;\">Blue Horizon Finance</div>\n<div>\ud83d\udcde +1 (800) 274-5678 \u00a0|\u00a0 \ud83c\udf10 www.bluehorizonfinance.com</div>\n</td></tr>\n</table>\n</td>\n</tr>\n<tr>\n<td style=\"background:#0B1F3A;padding:28px 48px;text-align:center;\">\n<p style=\"margin-bottom:10px;\"><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Privacy Policy</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Terms of Service</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Contact Us</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Unsubscribe</a></p>\n<p style=\"color:rgba(255,255,255,0.4);font-size:11px;line-height:1.7;\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br/>123 Finance Avenue, Suite 500, New York, NY 10001</p>\n</td>\n</tr>\n</table>",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeUnit": "minutes"
+            }
+          },
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1984,
+        1264
+      ],
+      "id": "f9424c13-ea41-4e71-887d-4c497f716587",
+      "name": "Send message and wait for response1",
+      "webhookId": "11be4286-df31-4896-b91b-e9ab9a832ef9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "591b5492-bed0-4b78-ad4c-c0e743c6e57e",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2496,
+        1088
+      ],
+      "id": "9c28365f-87f0-42f3-8c6e-64e8e9c0fc76",
+      "name": "approve/decline loan1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "44a2c7ff-65ad-4093-9ac5-c8357d12bd13",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": true,
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": "",
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2176,
+        1264
+      ],
+      "id": "31c255bc-01fc-41be-9f8c-11ca8b61fd2a",
+      "name": "response/no response1"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Declined Offer",
+        "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;margin:0 auto;font-family:'DM Sans',Arial,sans-serif;background:#ffffff;box-shadow:0 8px 40px rgba(11,31,58,0.12);\" width=\"640\">\n<tr>\n<td style=\"background:linear-gradient(135deg,#1A0505 0%,#3D0A0A 60%,#6B1515 100%);padding:40px 48px 36px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding-bottom:28px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"background:#888;border-radius:8px;width:44px;height:44px;text-align:center;vertical-align:middle;font-size:22px;padding:0 8px;\">\ud83c\udf0a</td>\n<td style=\"padding-left:12px;\">\n<div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:20px;font-weight:700;line-height:1.2;\">Blue Horizon Finance</div>\n<div style=\"color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;\">Trusted Lending Solutions</div>\n</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding-bottom:14px;\"><span style=\"display:inline-block;padding:5px 14px;border:1.5px solid rgba(255,150,150,0.4);border-radius:2px;color:#FFB3B3;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;\">Application Outcome</span></td></tr>\n<tr><td><div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:28px;font-weight:600;line-height:1.3;\">Your Loan Application<br/>Has Been Declined <span style=\"display:inline-block;border:3px solid #C0392B;border-radius:4px;padding:4px 16px;font-weight:800;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#C0392B;background:#fff;margin-left:8px;vertical-align:middle;\">Declined</span></div></td></tr>\n</table>\n</td>\n</tr>\n<tr><td style=\"height:4px;background:linear-gradient(90deg,#8B0000,#C0392B,#8B0000);font-size:0;line-height:0;\">\u00a0</td></tr>\n<tr>\n<td style=\"padding:40px 48px;background:#ffffff;\">\n<p style=\"font-size:16px;font-weight:600;color:#1A2634;margin-bottom:16px;\">Dear {{ $('Store CRM Data').item.json.Name }},</p>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">We regret to inform you that following our review process, <strong style=\"color:#1A2634;\">Blue Horizon Finance</strong> has made the decision to <strong style=\"color:#1A2634;\">decline your loan application</strong>. We understand this may be disappointing and we appreciate your patience throughout the process.</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FAF8F3;border-left:4px solid #C0392B;border-radius:0 6px 6px 0;margin:28px 0;\" width=\"100%\">\n<tr><td style=\"padding:20px 24px;\">\n<p style=\"font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:#718096;margin-bottom:12px;\">Application Decision</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Applicant</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $('Store CRM Data').item.json.Name }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Loan Amount Requested</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $('Store CRM Data').item.json['Loan Amount'] }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Decision</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#C0392B;text-align:right;\">Declined</td></tr>\n</table>\n</td></tr>\n</table>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">This decision was made based on the information provided in your application and our current lending policies. Common reasons for decline include insufficient response to our offer within the stipulated timeframe, changes in creditworthiness assessment, or failure to meet documentation requirements.</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FFF8E7;border:1px solid #F0D98B;border-radius:4px;margin:24px 0;\" width=\"100%\">\n<tr><td style=\"padding:16px 20px;font-size:14px;line-height:1.6;color:#7A5C00;\">\n<span style=\"font-size:18px;margin-right:10px;\">\ud83d\udca1</span><strong>Future Options:</strong> You may be eligible to reapply after <strong>90 days</strong>. We encourage you to strengthen your financial profile in the interim.\n        </td></tr>\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:32px 0;\" width=\"100%\">\n<tr><td style=\"text-align:center;\"><a href=\"#\" style=\"display:inline-block;padding:14px 40px;background:#0B1F3A;color:#ffffff;text-decoration:none;font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:0.05em;border-radius:3px;\">Contact an Advisor</a></td></tr>\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:36px;border-top:1px solid #E2E8F0;\" width=\"100%\">\n<tr><td style=\"padding-top:24px;font-size:14px;color:#4A5568;line-height:1.7;\">\n<div style=\"font-weight:700;color:#1A2634;font-size:15px;\">Credit Decision Team</div>\n<div style=\"color:#718096;font-size:13px;\">Blue Horizon Finance</div>\n<div>\ud83d\udcde +1 (800) 274-5678 \u00a0|\u00a0 \ud83c\udf10 www.bluehorizonfinance.com</div>\n</td></tr>\n</table>\n</td>\n</tr>\n<tr>\n<td style=\"background:#0B1F3A;padding:28px 48px;text-align:center;\">\n<p style=\"margin-bottom:10px;\"><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Privacy Policy</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Terms of Service</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Contact Us</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Unsubscribe</a></p>\n<p style=\"color:rgba(255,255,255,0.4);font-size:11px;line-height:1.7;\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br/>123 Finance Avenue, Suite 500, New York, NY 10001</p>\n</td>\n</tr>\n</table>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2928,
+        1216
+      ],
+      "id": "bc01e9c1-b509-4810-a188-c84052f2245a",
+      "name": "Declined Email1",
+      "webhookId": "05007600-8cb8-4fb8-9ae1-a6a30bdf82f3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst updatedItems = items.map((item) => {\n  // Try accessing from the form trigger node directly\n  const rawLoanAmount = $('Form Trigger').first().json[\"Loan Amount\"];\n  const loanAmount = Number(rawLoanAmount);\n  // const loanFigureNeeded = item?.json[\"Loan Amount\"]\n\n  const interestRate = loanAmount * 0.4;\n  const amountPayable = loanAmount + interestRate;\n  \n  return {\n    ...item.json,\n    \"Interest Rate\": interestRate,\n    \"Amount Payable\": amountPayable,\n    \"Loan figure needed\": loanAmount,\n    \n  };\n});\n\nreturn updatedItems.map((item) => ({ json: item }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1728,
+        1264
+      ],
+      "id": "7f1f69fb-75fe-45bc-8b5d-5adc82cd1445",
+      "name": "Interest and payable for 1M Above(40% interest)"
+    },
+    {
+      "parameters": {
+        "content": "JOB TITLE: N8N AUTOMATION SPECIALIST NEEDED TO BUILD LOAN ELIGIBILITY & EMAIL APPROVAL WORKFLOW\n\nJOB OVERVIEW\nWe are looking for an experienced n8n automation specialist to design and optimize a workflow that manages loan eligibility verification, automated email communication, and response-based follow-ups. The system should operate as a semi-automated loan approval funnel, handling applicants from form submission through confirmation and reminders.\n\n--------------------------------------------------------------------------------\n\nPROJECT DESCRIPTION\nApplicants complete an online form to check loan eligibility. Based on predefined criteria, eligible users receive a structured loan offer via email with approval/decline options. If no response is received within a defined timeframe, the system automatically sends reminder emails and continues the workflow logic accordingly.\n\nThe goal is to create a reliable, production-ready automation that minimizes manual intervention while maintaining clear communication with prospects.\n\n--------------------------------------------------------------------------------\n\nCORE RESPONSIBILITIES\n- Build and refine workflows inside n8n\n- Implement eligibility logic based on submitted form data\n- Each Applicant gets a welcome email acknowledging their interest\n- Perform automated calculations (interest rate & total payable)\n- Implement timeout logic and automated reminder emails\n- Handle branching logic for:\n- Approved responses\n- Declined responses\n- No-response follow-ups\n- Store applicant data in Google Sheets (CRM-style tracking)\n- Ensure clean data handling and scalable workflow structure\n\n--------------------------------------------------------------------------------\n\nTECH STACK\n- n8n (primary automation platform)\n- Gmail API\n- Google Sheets integration\n\nDELIVERABLES\n- Fully functional end-to-end workflow\n- Cleanly structured and documented automation\n- Error-safe logic handling responses and timeouts\n- Mobile-friendly HTML email templates\n- Scalable workflow design ready for future expansion\n\n--------------------------------------------------------------------------------\n\nIDEAL CANDIDATE\n- Strong experience with n8n workflows\n- Comfortable with conditional logic and execution states\n- Experience building approval or onboarding automations\n- Familiar with email automation best practices\n- Able to design maintainable, production-level workflows\n\nNICE TO HAVE\n- Experience with fintech or lead qualification funnels\n- Knowledge of CRM-style automation design\n- Optimization for response/conversion workflows\n\n--------------------------------------------------------------------------------\n\nPROJECT TYPE: One-time setup (with potential long-term collaboration)\nEXPERIENCE LEVEL: Intermediate to Expert\nAVAILABILITY: Start immediately\n\nPlease include examples of similar automation workflows you have built when applying.\n",
+        "height": 240
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        256,
+        -448
+      ],
+      "typeVersion": 1,
+      "id": "bbc0f9ef-c030-463b-ab1d-bf984e3c7596",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Interest And Amount Payable Handled",
+        "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;margin:0 auto;font-family:'DM Sans',Arial,sans-serif;background:#ffffff;box-shadow:0 8px 40px rgba(11,31,58,0.12);\" width=\"640\">\n<tr>\n<td style=\"background:linear-gradient(135deg,#0A2A0A 0%,#1A4A2A 60%,#2E7A4A 100%);padding:40px 48px 36px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding-bottom:28px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"background:#C9A84C;border-radius:8px;width:44px;height:44px;text-align:center;vertical-align:middle;font-size:22px;padding:0 8px;\">\ud83c\udf0a</td>\n<td style=\"padding-left:12px;\">\n<div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:20px;font-weight:700;line-height:1.2;\">Blue Horizon Finance</div>\n<div style=\"color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;\">Trusted Lending Solutions</div>\n</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding-bottom:14px;\"><span style=\"display:inline-block;padding:5px 14px;border:1.5px solid rgba(201,168,76,0.6);border-radius:2px;color:#F0D98B;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;\">Premium Loan Offer \u2014 Action Required</span></td></tr>\n<tr><td><div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:28px;font-weight:600;line-height:1.3;\">Exclusive Loan Offer<br/>Prepared for You</div></td></tr>\n</table>\n</td>\n</tr>\n<tr><td style=\"height:4px;background:linear-gradient(90deg,#0A4A2A,#1A7A4A,#0A4A2A);font-size:0;line-height:0;\">\u00a0</td></tr>\n<tr>\n<td style=\"padding:40px 48px;background:#ffffff;\">\n<p style=\"font-size:16px;font-weight:600;color:#1A2634;margin-bottom:16px;\">Dear {{ $('Store CRM Data').item.json.Name }},</p>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">Congratulations! You qualify for our <strong style=\"color:#1A2634;\">Premium Loan Programme</strong> at <strong style=\"color:#1A2634;\">Blue Horizon Finance</strong>. As a high-value applicant, you are eligible for our preferential interest rate. Please review your personalised offer below.</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FAF8F3;border-left:4px solid #1A7A4A;border-radius:0 6px 6px 0;margin:28px 0;\" width=\"100%\">\n<tr><td style=\"padding:20px 24px;\">\n<p style=\"font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:#718096;margin-bottom:12px;\">Premium Loan Offer Details</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Applicant</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $('Store CRM Data').item.json.Name }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Loan Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#C9A84C;text-align:right;\">{{ $('Store CRM Data').item.json['Loan Amount'] }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Preferential Rate</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A7A4A;text-align:right;\">40% per annum</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Interest Payable</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#2E80CE;text-align:right;\">{{ $json['Interest Rate'] }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Repayment Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $json['Amount Payable'] }}</td></tr>\n<tr><td style=\"padding:8px 0;font-size:14px;color:#4A5568;\">Loan Tier</td><td style=\"padding:8px 0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">Premium (1M Above)</td></tr>\n</table>\n</td></tr>\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#EFF8F2;border:1px solid #A8D5B8;border-radius:4px;margin:24px 0;\" width=\"100%\">\n<tr><td style=\"padding:16px 20px;font-size:14px;line-height:1.6;color:#1A7A4A;\">\n<span style=\"font-size:18px;margin-right:10px;\">\ud83c\udf1f</span>As a premium applicant, you benefit from our <strong>reduced 40% interest rate</strong> \u2014 our most competitive rate for high-value loans. This offer is valid for <strong>48 hours</strong>.\n        </td></tr>\n</table>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">Our dedicated relationship managers will guide you through the entire process from acceptance to disbursement. We ensure a seamless and confidential experience for every premium client.</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:32px 0;\" width=\"100%\">\n\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:36px;border-top:1px solid #E2E8F0;\" width=\"100%\">\n<tr><td style=\"padding-top:24px;font-size:14px;color:#4A5568;line-height:1.7;\">\n<div style=\"font-weight:700;color:#1A2634;font-size:15px;\">Premium Loans Team</div>\n<div style=\"color:#718096;font-size:13px;\">Blue Horizon Finance</div>\n<div>\ud83d\udcde +1 (800) 274-5678 \u00a0|\u00a0 \ud83c\udf10 www.bluehorizonfinance.com</div>\n</td></tr>\n</table>\n</td>\n</tr>\n<tr>\n<td style=\"background:#0B1F3A;padding:28px 48px;text-align:center;\">\n<p style=\"margin-bottom:10px;\"><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Privacy Policy</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Terms of Service</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Contact Us</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Unsubscribe</a></p>\n<p style=\"color:rgba(255,255,255,0.4);font-size:11px;line-height:1.7;\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br/>123 Finance Avenue, Suite 500, New York, NY 10001</p>\n</td>\n</tr>\n</table>",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1952,
+        576
+      ],
+      "id": "d0cd5255-87b0-48fa-a14a-df12897542e3",
+      "name": "Send message and wait for response",
+      "webhookId": "11be4286-df31-4896-b91b-e9ab9a832ef9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "44a2c7ff-65ad-4093-9ac5-c8357d12bd13",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": true,
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": "",
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2176,
+        576
+      ],
+      "id": "5c91ab95-bccd-419e-b1db-b96ded29eac0",
+      "name": "response"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "591b5492-bed0-4b78-ad4c-c0e743c6e57e",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2464,
+        400
+      ],
+      "id": "fe7ffbc5-6ed4-4853-a3c8-a48b487a58eb",
+      "name": "Accepted/Declined"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "591b5492-bed0-4b78-ad4c-c0e743c6e57e",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3056,
+        1360
+      ],
+      "id": "7c1e6026-6607-40e7-8f00-1fe884f2a2f5",
+      "name": "approve/decline loan"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Declined Offer",
+        "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;margin:0 auto;font-family:'DM Sans',Arial,sans-serif;background:#ffffff;box-shadow:0 8px 40px rgba(11,31,58,0.12);\" width=\"640\">\n<tr>\n<td style=\"background:linear-gradient(135deg,#1A0505 0%,#3D0A0A 60%,#6B1515 100%);padding:40px 48px 36px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding-bottom:28px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"background:#888;border-radius:8px;width:44px;height:44px;text-align:center;vertical-align:middle;font-size:22px;padding:0 8px;\">\ud83c\udf0a</td>\n<td style=\"padding-left:12px;\">\n<div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:20px;font-weight:700;line-height:1.2;\">Blue Horizon Finance</div>\n<div style=\"color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;\">Trusted Lending Solutions</div>\n</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding-bottom:14px;\"><span style=\"display:inline-block;padding:5px 14px;border:1.5px solid rgba(255,150,150,0.4);border-radius:2px;color:#FFB3B3;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;\">Application Outcome</span></td></tr>\n<tr><td><div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:28px;font-weight:600;line-height:1.3;\">Your Loan Application<br/>Has Been Declined <span style=\"display:inline-block;border:3px solid #C0392B;border-radius:4px;padding:4px 16px;font-weight:800;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#C0392B;background:#fff;margin-left:8px;vertical-align:middle;\">Declined</span></div></td></tr>\n</table>\n</td>\n</tr>\n<tr><td style=\"height:4px;background:linear-gradient(90deg,#8B0000,#C0392B,#8B0000);font-size:0;line-height:0;\">\u00a0</td></tr>\n<tr>\n<td style=\"padding:40px 48px;background:#ffffff;\">\n<p style=\"font-size:16px;font-weight:600;color:#1A2634;margin-bottom:16px;\">Dear {{ $('Store CRM Data').item.json.Name }},</p>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">We regret to inform you that following our review process, <strong style=\"color:#1A2634;\">Blue Horizon Finance</strong> has made the decision to <strong style=\"color:#1A2634;\">decline your loan application</strong>. We understand this may be disappointing and we appreciate your patience throughout the process.</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FAF8F3;border-left:4px solid #C0392B;border-radius:0 6px 6px 0;margin:28px 0;\" width=\"100%\">\n<tr><td style=\"padding:20px 24px;\">\n<p style=\"font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:#718096;margin-bottom:12px;\">Application Decision</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Applicant</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $('Store CRM Data').item.json.Name }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Loan Amount Requested</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $('Store CRM Data').item.json['Loan Amount'] }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Decision</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#C0392B;text-align:right;\">Declined</td></tr>\n</table>\n</td></tr>\n</table>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">This decision was made based on the information provided in your application and our current lending policies. Common reasons for decline include insufficient response to our offer within the stipulated timeframe, changes in creditworthiness assessment, or failure to meet documentation requirements.</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FFF8E7;border:1px solid #F0D98B;border-radius:4px;margin:24px 0;\" width=\"100%\">\n<tr><td style=\"padding:16px 20px;font-size:14px;line-height:1.6;color:#7A5C00;\">\n<span style=\"font-size:18px;margin-right:10px;\">\ud83d\udca1</span><strong>Future Options:</strong> You may be eligible to reapply after <strong>90 days</strong>. We encourage you to strengthen your financial profile in the interim.\n        </td></tr>\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:32px 0;\" width=\"100%\">\n<tr><td style=\"text-align:center;\"><a href=\"#\" style=\"display:inline-block;padding:14px 40px;background:#0B1F3A;color:#ffffff;text-decoration:none;font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:0.05em;border-radius:3px;\">Contact an Advisor</a></td></tr>\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:36px;border-top:1px solid #E2E8F0;\" width=\"100%\">\n<tr><td style=\"padding-top:24px;font-size:14px;color:#4A5568;line-height:1.7;\">\n<div style=\"font-weight:700;color:#1A2634;font-size:15px;\">Credit Decision Team</div>\n<div style=\"color:#718096;font-size:13px;\">Blue Horizon Finance</div>\n<div>\ud83d\udcde +1 (800) 274-5678 \u00a0|\u00a0 \ud83c\udf10 www.bluehorizonfinance.com</div>\n</td></tr>\n</table>\n</td>\n</tr>\n<tr>\n<td style=\"background:#0B1F3A;padding:28px 48px;text-align:center;\">\n<p style=\"margin-bottom:10px;\"><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Privacy Policy</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Terms of Service</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Contact Us</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Unsubscribe</a></p>\n<p style=\"color:rgba(255,255,255,0.4);font-size:11px;line-height:1.7;\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br/>123 Finance Avenue, Suite 500, New York, NY 10001</p>\n</td>\n</tr>\n</table>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        3328,
+        1552
+      ],
+      "id": "f7de276f-44db-43b2-8e88-7a1a7576ad94",
+      "name": "Declined Email2",
+      "webhookId": "05007600-8cb8-4fb8-9ae1-a6a30bdf82f3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        3056,
+        1584
+      ],
+      "id": "ead12a14-d29a-4a7d-bf9f-c1fccf940ad6",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "formTitle": "BLUE HORIZON FINANCE",
+        "formDescription": "Thanks for checking us out, please confirm your eligibility",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email Address",
+              "fieldType": "email"
+            },
+            {
+              "fieldLabel": "Phone Number",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "Salary Range",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "0-500k"
+                  },
+                  {
+                    "option": "501k-1,000,000"
+                  },
+                  {
+                    "option": "1,000,000 above"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Loan Amount",
+              "fieldType": "number"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        368,
+        928
+      ],
+      "id": "a566e3ed-c987-4b42-bc69-7d061ff1446c",
+      "name": "On form submission",
+      "webhookId": "acf24f4d-11d3-44b5-9eff-9c3ce884e0bb"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Your Loan Has Been Approved",
+        "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;margin:0 auto;font-family:'DM Sans',Arial,sans-serif;background:#ffffff;box-shadow:0 8px 40px rgba(11,31,58,0.12);\" width=\"640\"> <tr> <td style=\"background:linear-gradient(135deg,#051A0A 0%,#0A3A1A 60%,#1A6B35 100%);padding:40px 48px 36px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr><td style=\"padding-bottom:28px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr> <td style=\"background:#C9A84C;border-radius:8px;width:44px;height:44px;text-align:center;vertical-align:middle;font-size:22px;padding:0 8px;\">\ud83c\udf0a</td> <td style=\"padding-left:12px;\"> <div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:20px;font-weight:700;line-height:1.2;\">Blue Horizon Finance</div> <div style=\"color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;\">Trusted Lending Solutions</div> </td> </tr></table> </td></tr> <tr><td style=\"padding-bottom:14px;\"><span style=\"display:inline-block;padding:5px 14px;border:1.5px solid rgba(201,168,76,0.6);border-radius:2px;color:#F0D98B;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;\">\ud83c\udf89 Loan Approved</span></td></tr> <tr><td><div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:28px;font-weight:600;line-height:1.3;\">Congratulations \u2014<br/>Your Loan is Approved! <span style=\"display:inline-block;border:3px solid #1A7A4A;border-radius:4px;padding:4px 16px;font-weight:800;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#1A7A4A;background:#fff;margin-left:8px;vertical-align:middle;\">Approved</span></div></td></tr> </table> </td> </tr> <tr><td style=\"height:4px;background:linear-gradient(90deg,#0A4A2A,#1A7A4A,#0A4A2A);font-size:0;line-height:0;\">\u00a0</td></tr> <tr> <td style=\"padding:40px 48px;background:#ffffff;\"> <p style=\"font-size:16px;font-weight:600;color:#1A2634;margin-bottom:16px;\">Dear {{ $('Store CRM Data').item.json.Name }},</p> <p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">We are thrilled to inform you that your loan application has been <strong style=\"color:#1A2634;\">approved</strong> by <strong style=\"color:#1A2634;\">Blue Horizon Finance</strong>! \ud83c\udf89 Your trust in us means the world, and we are committed to making your borrowing experience seamless and transparent.</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FAF8F3;border-left:4px solid #1A7A4A;border-radius:0 6px 6px 0;margin:28px 0;\" width=\"100%\"> <tr><td style=\"padding:20px 24px;\"> <p style=\"font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:#718096;margin-bottom:12px;\">\u2705 Approved Loan Details</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Applicant Name</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $('Store CRM Data').item.json.Name }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Approved Loan Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#C9A84C;text-align:right;\">{{ $('Store CRM Data').item.json['Loan Amount'] }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Interest Rate</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">40%</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Interest Payable</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#2E80CE;text-align:right;\">{{ $('Interest and payable for 1M Above(40% interest)').item.json['Interest Rate'] }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Repayment Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $('Interest and payable for 1M Above(40% interest)').item.json['Amount Payable'] }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Disbursement Timeline</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A7A4A;text-align:right;\">2\u20135 Business Days</td></tr> </table> </td></tr> </table> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#EFF8F2;border:1px solid #A8D5B8;border-radius:4px;margin:24px 0;\" width=\"100%\"> <tr><td style=\"padding:16px 20px;font-size:14px;line-height:1.6;color:#1A7A4A;\"> <span style=\"font-size:18px;margin-right:10px;\">\ud83c\udfe6</span>Funds will be disbursed to your registered bank account within <strong>2\u20135 business days</strong>. You will receive a confirmation SMS and email once the transfer is initiated. </td></tr> </table> <p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\"><strong style=\"color:#1A2634;\">Next Steps:</strong> Our team will contact you shortly to complete the final documentation and agreement signing. Please ensure your bank account details on file are correct and that you have a valid ID ready for verification.</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #E2E8F0;margin:28px 0;\" width=\"100%\"><tr><td style=\"padding-top:28px;\"></td></tr></table> <p style=\"font-size:14px;line-height:1.75;color:#4A5568;margin-bottom:20px;\"><strong style=\"color:#1A2634;\">Repayment Reminder:</strong> Please ensure you are familiar with your repayment schedule. Making timely repayments will help maintain a healthy credit profile and may qualify you for preferential rates on future applications.</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:32px 0;\" width=\"100%\">  </table> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:36px;border-top:1px solid #E2E8F0;\" width=\"100%\"> <tr><td style=\"padding-top:24px;font-size:14px;color:#4A5568;line-height:1.7;\"> <div style=\"font-weight:700;color:#1A2634;font-size:15px;\">Loans Disbursement Team</div> <div style=\"color:#718096;font-size:13px;\">Blue Horizon Finance</div> <div>\ud83d\udcde +1 (800) 274-5678 \u00a0|\u00a0 \u2709\ufe0f <a class=\"__cf_email__\" data-cfemail=\"167a7977786556747a63737e79647f6c7978707f78777875733875797b\" href=\"/cdn-cgi/l/email-protection\">[email\u00a0protected]</a></div> <div>\ud83c\udf10 www.bluehorizonfinance.com</div> </td></tr> </table> </td> </tr> <tr> <td style=\"background:#0B1F3A;padding:28px 48px;text-align:center;\"> <p style=\"margin-bottom:10px;\"><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Privacy Policy</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Terms of Service</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Contact Us</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Unsubscribe</a></p> <p style=\"color:rgba(255,255,255,0.4);font-size:11px;line-height:1.7;\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br/>123 Finance Avenue, Suite 500, New York, NY 10001<br/>This email contains confidential information intended only for the named recipient.</p> </td> </tr> </table>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2928,
+        1056
+      ],
+      "id": "e0bc7743-6689-402b-9dd6-c7ff003b6dea",
+      "name": "Send a message",
+      "webhookId": "93da3508-b013-4464-b688-9ae6892eebbe",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Your Loan Has Been Approved",
+        "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;margin:0 auto;font-family:'DM Sans',Arial,sans-serif;background:#ffffff;box-shadow:0 8px 40px rgba(11,31,58,0.12);\" width=\"640\"> <tr> <td style=\"background:linear-gradient(135deg,#051A0A 0%,#0A3A1A 60%,#1A6B35 100%);padding:40px 48px 36px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr><td style=\"padding-bottom:28px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr> <td style=\"background:#C9A84C;border-radius:8px;width:44px;height:44px;text-align:center;vertical-align:middle;font-size:22px;padding:0 8px;\">\ud83c\udf0a</td> <td style=\"padding-left:12px;\"> <div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:20px;font-weight:700;line-height:1.2;\">Blue Horizon Finance</div> <div style=\"color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;\">Trusted Lending Solutions</div> </td> </tr></table> </td></tr> <tr><td style=\"padding-bottom:14px;\"><span style=\"display:inline-block;padding:5px 14px;border:1.5px solid rgba(201,168,76,0.6);border-radius:2px;color:#F0D98B;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;\">\ud83c\udf89 Loan Approved</span></td></tr> <tr><td><div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:28px;font-weight:600;line-height:1.3;\">Congratulations \u2014<br/>Your Loan is Approved! <span style=\"display:inline-block;border:3px solid #1A7A4A;border-radius:4px;padding:4px 16px;font-weight:800;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#1A7A4A;background:#fff;margin-left:8px;vertical-align:middle;\">Approved</span></div></td></tr> </table> </td> </tr> <tr><td style=\"height:4px;background:linear-gradient(90deg,#0A4A2A,#1A7A4A,#0A4A2A);font-size:0;line-height:0;\">\u00a0</td></tr> <tr> <td style=\"padding:40px 48px;background:#ffffff;\"> <p style=\"font-size:16px;font-weight:600;color:#1A2634;margin-bottom:16px;\">Dear {{ $('Store CRM Data').item.json.Name }},</p> <p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">We are thrilled to inform you that your loan application has been <strong style=\"color:#1A2634;\">approved</strong> by <strong style=\"color:#1A2634;\">Blue Horizon Finance</strong>! \ud83c\udf89 Your trust in us means the world, and we are committed to making your borrowing experience seamless and transparent.</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FAF8F3;border-left:4px solid #1A7A4A;border-radius:0 6px 6px 0;margin:28px 0;\" width=\"100%\"> <tr><td style=\"padding:20px 24px;\"> <p style=\"font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:#718096;margin-bottom:12px;\">\u2705 Approved Loan Details</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Applicant Name</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $('Store CRM Data').item.json.Name }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Approved Loan Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#C9A84C;text-align:right;\">{{ $('Store CRM Data').item.json['Loan Amount'] }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Interest Rate</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">40%</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Interest Payable</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#2E80CE;text-align:right;\">{{ $('Interest and payable for 1M Above(40% interest)').item.json['Interest Rate'] }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Repayment Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $('Interest and payable for 1M Above(40% interest)').item.json['Amount Payable'] }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Disbursement Timeline</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A7A4A;text-align:right;\">2\u20135 Business Days</td></tr> </table> </td></tr> </table> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#EFF8F2;border:1px solid #A8D5B8;border-radius:4px;margin:24px 0;\" width=\"100%\"> <tr><td style=\"padding:16px 20px;font-size:14px;line-height:1.6;color:#1A7A4A;\"> <span style=\"font-size:18px;margin-right:10px;\">\ud83c\udfe6</span>Funds will be disbursed to your registered bank account within <strong>2\u20135 business days</strong>. You will receive a confirmation SMS and email once the transfer is initiated. </td></tr> </table> <p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\"><strong style=\"color:#1A2634;\">Next Steps:</strong> Our team will contact you shortly to complete the final documentation and agreement signing. Please ensure your bank account details on file are correct and that you have a valid ID ready for verification.</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #E2E8F0;margin:28px 0;\" width=\"100%\"><tr><td style=\"padding-top:28px;\"></td></tr></table> <p style=\"font-size:14px;line-height:1.75;color:#4A5568;margin-bottom:20px;\"><strong style=\"color:#1A2634;\">Repayment Reminder:</strong> Please ensure you are familiar with your repayment schedule. Making timely repayments will help maintain a healthy credit profile and may qualify you for preferential rates on future applications.</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:32px 0;\" width=\"100%\">  </table> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:36px;border-top:1px solid #E2E8F0;\" width=\"100%\"> <tr><td style=\"padding-top:24px;font-size:14px;color:#4A5568;line-height:1.7;\"> <div style=\"font-weight:700;color:#1A2634;font-size:15px;\">Loans Disbursement Team</div> <div style=\"color:#718096;font-size:13px;\">Blue Horizon Finance</div> <div>\ud83d\udcde +1 (800) 274-5678 \u00a0|\u00a0 \u2709\ufe0f <a class=\"__cf_email__\" data-cfemail=\"167a7977786556747a63737e79647f6c7978707f78777875733875797b\" href=\"/cdn-cgi/l/email-protection\">[email\u00a0protected]</a></div> <div>\ud83c\udf10 www.bluehorizonfinance.com</div> </td></tr> </table> </td> </tr> <tr> <td style=\"background:#0B1F3A;padding:28px 48px;text-align:center;\"> <p style=\"margin-bottom:10px;\"><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Privacy Policy</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Terms of Service</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Contact Us</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Unsubscribe</a></p> <p style=\"color:rgba(255,255,255,0.4);font-size:11px;line-height:1.7;\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br/>123 Finance Avenue, Suite 500, New York, NY 10001<br/>This email contains confidential information intended only for the named recipient.</p> </td> </tr> </table>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        3328,
+        1280
+      ],
+      "id": "7479cce7-e1f1-4e3a-ad8f-d8884b70b7eb",
+      "name": "Send a message1",
+      "webhookId": "03cc9056-7550-4bc5-9db3-a85b4a418bc9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Interest And Amount Payable Handled",
+        "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;margin:0 auto;font-family:'DM Sans',Arial,sans-serif;background:#ffffff;box-shadow:0 8px 40px rgba(11,31,58,0.12);\" width=\"640\">\n<tr>\n<td style=\"background:linear-gradient(135deg,#3D2000 0%,#7A4A00 60%,#C97A00 100%);padding:40px 48px 36px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding-bottom:28px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"background:#C0392B;border-radius:8px;width:44px;height:44px;text-align:center;vertical-align:middle;font-size:22px;padding:0 8px;\">\ud83c\udf0a</td>\n<td style=\"padding-left:12px;\">\n<div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:20px;font-weight:700;line-height:1.2;\">Blue Horizon Finance</div>\n<div style=\"color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;\">Trusted Lending Solutions</div>\n</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding-bottom:14px;\"><span style=\"display:inline-block;padding:5px 14px;border:1.5px solid rgba(255,200,100,0.6);border-radius:2px;color:#FFD580;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;\">\u26a0\ufe0f Final Notice</span></td></tr>\n<tr><td><div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:28px;font-weight:600;line-height:1.3;\">Last Chance:<br/>Your Offer Expires Soon</div></td></tr>\n</table>\n</td>\n</tr>\n<tr><td style=\"height:4px;background:linear-gradient(90deg,#C97A00,#F0C050,#C97A00);font-size:0;line-height:0;\">\u00a0</td></tr>\n<tr>\n<td style=\"padding:40px 48px;background:#ffffff;\">\n<p style=\"font-size:16px;font-weight:600;color:#1A2634;margin-bottom:16px;\">Dear {{ $json.Name }},</p>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">This is a <strong style=\"color:#1A2634;\">final reminder</strong> regarding your loan offer from <strong style=\"color:#1A2634;\">Blue Horizon Finance</strong>. We have not yet received your response and your offer is about to expire. Please take action immediately.</p>\n<!-- DEADLINE BOX -->\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#0B1F3A;border-radius:4px;margin:24px 0;\" width=\"100%\">\n<tr><td style=\"padding:18px 24px;text-align:center;\">\n<div style=\"font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px;\">Offer Expires In</div>\n<div style=\"font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:600;color:#F0D98B;\">\u23f0 Less Than 24 Hours Remaining</div>\n</td></tr>\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FAF8F3;border-left:4px solid #C97A00;border-radius:0 6px 6px 0;margin:28px 0;\" width=\"100%\">\n<tr><td style=\"padding:20px 24px;\">\n<p style=\"font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:#718096;margin-bottom:12px;\">Outstanding Offer Summary</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Applicant</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $('Store CRM Data').item.json.Name }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Loan Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#C9A84C;text-align:right;\">{{ $('Store CRM Data').item.json['Loan Amount'] }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Interest Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $('Interest and payable for 1M Above(40% interest)').item.json['Interest Rate'] }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Repayable</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $('Interest and payable for 1M Above(40% interest)').item.json['Amount Payable'] }}</td></tr>\n<tr><td style=\"padding:8px 0;font-size:14px;color:#4A5568;\">Offer Status</td><td style=\"padding:8px 0;font-size:14px;font-weight:600;color:#C97A00;text-align:right;\">Awaiting Response</td></tr>\n</table>\n</td></tr>\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FDF2F2;border:1px solid #F5C6CB;border-radius:4px;margin:24px 0;\" width=\"100%\">\n<tr><td style=\"padding:16px 20px;font-size:14px;line-height:1.6;color:#C0392B;\">\n<span style=\"font-size:18px;margin-right:10px;\">\ud83d\udea8</span>If we do not receive your response by the deadline, your loan application will be <strong>automatically closed</strong> and you will need to submit a new application.\n        </td></tr>\n</table>\n\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:36px;border-top:1px solid #E2E8F0;\" width=\"100%\">\n<tr><td style=\"padding-top:24px;font-size:14px;color:#4A5568;line-height:1.7;\">\n<div style=\"font-weight:700;color:#1A2634;font-size:15px;\">Client Relations Team</div>\n<div style=\"color:#718096;font-size:13px;\">Blue Horizon Finance</div>\n<div>\ud83d\udcde +1 (800) 274-5678 (Urgent Line) \u00a0|\u00a0 \ud83c\udf10 www.bluehorizonfinance.com</div>\n</td></tr>\n</table>\n</td>\n</tr>\n<tr>\n<td style=\"background:#0B1F3A;padding:28px 48px;text-align:center;\">\n<p style=\"margin-bottom:10px;\"><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Privacy Policy</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Terms of Service</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Contact Us</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Unsubscribe</a></p>\n<p style=\"color:rgba(255,255,255,0.4);font-size:11px;line-height:1.7;\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br/>123 Finance Avenue, Suite 500, New York, NY 10001</p>\n</td>\n</tr>\n</table>",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeUnit": "minutes"
+            }
+          },
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2496,
+        1488
+      ],
+      "id": "bf5495fe-5071-40cb-8c84-7fb5f200c205",
+      "name": "Send message and wait for response2",
+      "webhookId": "11be4286-df31-4896-b91b-e9ab9a832ef9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "44a2c7ff-65ad-4093-9ac5-c8357d12bd13",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": true,
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": "",
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2704,
+        1472
+      ],
+      "id": "bc8c3fdf-479a-49c8-8881-8eedc6856a14",
+      "name": "Response Exists?2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2992,
+        800
+      ],
+      "id": "93aeb005-a945-4edb-a0d6-9efe0a14a45f",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "44a2c7ff-65ad-4093-9ac5-c8357d12bd13",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": true,
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": "",
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2752,
+        656
+      ],
+      "id": "0e00d75a-aab4-44f5-b21d-318e8200ae90",
+      "name": "Response Exists?"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst updatedItems = items.map((item) => {\n  // Try accessing from the form trigger node directly\n  const rawLoanAmount = $('Store CRM Data').first().json['Loan Amount'];\n  const loanAmount = Number(rawLoanAmount);\n  // const loanFigureNeeded = item?.json[\"Loan Amount\"]\n\n  const interestRate = loanAmount * 0.5;\n  const amountPayable = loanAmount + interestRate;\n  \n  return {\n    ...item.json,\n    \"Interest Rate\": interestRate,\n    \"Amount Payable\": amountPayable,\n    \"Loan figure needed\": loanAmount,\n    \n  };\n});\n\nreturn updatedItems.map((item) => ({ json: item }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        592
+      ],
+      "id": "a14b994d-76cb-494b-bdd9-c313f8eb8b4a",
+      "name": "Interest and payable for 500-1M(50% interest)"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AB4QUAK9T",
+          "mode": "list",
+          "cachedResultName": "general"
+        },
+        "text": "=Hi,\n A new lead with this detaails : \nName:{{ $json.fields['Applicant Name'] }},\nIntrerest Payable: {{ $json.fields['Total Interest Payable'] }},\nTotal Repayment Amount:{{ $json.fields['Total Repayment Amount'] }},\nAppproved Loan AMount: {{ $json.fields['Approved Loan Amount'] }}\nInterest Rate: {{ $json.fields['Interest Rate'] }}\n",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        3296,
+        176
+      ],
+      "id": "7f4b24a1-1588-49f0-bce1-5700e7c34ed0",
+      "name": "Send a message4",
+      "webhookId": "014e3594-ef3d-4591-8774-4e6470aa6f29",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Slack OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Interest And Amount Payable Handled",
+        "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;margin:0 auto;font-family:'DM Sans',Arial,sans-serif;background:#ffffff;box-shadow:0 8px 40px rgba(11,31,58,0.12);\" width=\"640\">\n<tr>\n<td style=\"background:linear-gradient(135deg,#3D2000 0%,#7A4A00 60%,#C97A00 100%);padding:40px 48px 36px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding-bottom:28px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"background:#C0392B;border-radius:8px;width:44px;height:44px;text-align:center;vertical-align:middle;font-size:22px;padding:0 8px;\">\ud83c\udf0a</td>\n<td style=\"padding-left:12px;\">\n<div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:20px;font-weight:700;line-height:1.2;\">Blue Horizon Finance</div>\n<div style=\"color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;\">Trusted Lending Solutions</div>\n</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding-bottom:14px;\"><span style=\"display:inline-block;padding:5px 14px;border:1.5px solid rgba(255,200,100,0.6);border-radius:2px;color:#FFD580;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;\">\u26a0\ufe0f Final Notice</span></td></tr>\n<tr><td><div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:28px;font-weight:600;line-height:1.3;\">Last Chance:<br/>Your Offer Expires Soon</div></td></tr>\n</table>\n</td>\n</tr>\n<tr><td style=\"height:4px;background:linear-gradient(90deg,#C97A00,#F0C050,#C97A00);font-size:0;line-height:0;\">\u00a0</td></tr>\n<tr>\n<td style=\"padding:40px 48px;background:#ffffff;\">\n<p style=\"font-size:16px;font-weight:600;color:#1A2634;margin-bottom:16px;\">Dear {{ $json.Name }},</p>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">This is a <strong style=\"color:#1A2634;\">final reminder</strong> regarding your loan offer from <strong style=\"color:#1A2634;\">Blue Horizon Finance</strong>. We have not yet received your response and your offer is about to expire. Please take action immediately.</p>\n<!-- DEADLINE BOX -->\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#0B1F3A;border-radius:4px;margin:24px 0;\" width=\"100%\">\n<tr><td style=\"padding:18px 24px;text-align:center;\">\n<div style=\"font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px;\">Offer Expires In</div>\n<div style=\"font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:600;color:#F0D98B;\">\u23f0 Less Than 24 Hours Remaining</div>\n</td></tr>\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FAF8F3;border-left:4px solid #C97A00;border-radius:0 6px 6px 0;margin:28px 0;\" width=\"100%\">\n<tr><td style=\"padding:20px 24px;\">\n<p style=\"font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:#718096;margin-bottom:12px;\">Outstanding Offer Summary</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Applicant</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $('Store CRM Data').item.json.Name }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Loan Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#C9A84C;text-align:right;\">{{ $('Store CRM Data').item.json['Loan Amount'] }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Interest Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $('Interest and payable for 1M Above(40% interest)').item.json['Interest Rate'] }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Repayable</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $('Interest and payable for 1M Above(40% interest)').item.json['Amount Payable'] }}</td></tr>\n<tr><td style=\"padding:8px 0;font-size:14px;color:#4A5568;\">Offer Status</td><td style=\"padding:8px 0;font-size:14px;font-weight:600;color:#C97A00;text-align:right;\">Awaiting Response</td></tr>\n</table>\n</td></tr>\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FDF2F2;border:1px solid #F5C6CB;border-radius:4px;margin:24px 0;\" width=\"100%\">\n<tr><td style=\"padding:16px 20px;font-size:14px;line-height:1.6;color:#C0392B;\">\n<span style=\"font-size:18px;margin-right:10px;\">\ud83d\udea8</span>If we do not receive your response by the deadline, your loan application will be <strong>automatically closed</strong> and you will need to submit a new application.\n        </td></tr>\n</table>\n\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:36px;border-top:1px solid #E2E8F0;\" width=\"100%\">\n<tr><td style=\"padding-top:24px;font-size:14px;color:#4A5568;line-height:1.7;\">\n<div style=\"font-weight:700;color:#1A2634;font-size:15px;\">Client Relations Team</div>\n<div style=\"color:#718096;font-size:13px;\">Blue Horizon Finance</div>\n<div>\ud83d\udcde +1 (800) 274-5678 (Urgent Line) \u00a0|\u00a0 \ud83c\udf10 www.bluehorizonfinance.com</div>\n</td></tr>\n</table>\n</td>\n</tr>\n<tr>\n<td style=\"background:#0B1F3A;padding:28px 48px;text-align:center;\">\n<p style=\"margin-bottom:10px;\"><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Privacy Policy</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Terms of Service</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Contact Us</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Unsubscribe</a></p>\n<p style=\"color:rgba(255,255,255,0.4);font-size:11px;line-height:1.7;\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br/>123 Finance Avenue, Suite 500, New York, NY 10001</p>\n</td>\n</tr>\n</table>",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeUnit": "minutes"
+            }
+          },
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2464,
+        656
+      ],
+      "id": "90e451c4-ae57-43f7-9b6b-2d67fc59787d",
+      "name": "Approval/Decline Message",
+      "webhookId": "11be4286-df31-4896-b91b-e9ab9a832ef9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "591b5492-bed0-4b78-ad4c-c0e743c6e57e",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        3008,
+        544
+      ],
+      "id": "3d963e74-4d7b-4e8b-acfc-264358d89f23",
+      "name": "Approve/Decline"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Your Loan Has Been Approved",
+        "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;margin:0 auto;font-family:'DM Sans',Arial,sans-serif;background:#ffffff;box-shadow:0 8px 40px rgba(11,31,58,0.12);\" width=\"640\"> <tr> <td style=\"background:linear-gradient(135deg,#051A0A 0%,#0A3A1A 60%,#1A6B35 100%);padding:40px 48px 36px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr><td style=\"padding-bottom:28px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr> <td style=\"background:#C9A84C;border-radius:8px;width:44px;height:44px;text-align:center;vertical-align:middle;font-size:22px;padding:0 8px;\">\ud83c\udf0a</td> <td style=\"padding-left:12px;\"> <div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:20px;font-weight:700;line-height:1.2;\">Blue Horizon Finance</div> <div style=\"color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;\">Trusted Lending Solutions</div> </td> </tr></table> </td></tr> <tr><td style=\"padding-bottom:14px;\"><span style=\"display:inline-block;padding:5px 14px;border:1.5px solid rgba(201,168,76,0.6);border-radius:2px;color:#F0D98B;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;\">\ud83c\udf89 Loan Approved</span></td></tr> <tr><td><div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:28px;font-weight:600;line-height:1.3;\">Congratulations \u2014<br/>Your Loan is Approved! <span style=\"display:inline-block;border:3px solid #1A7A4A;border-radius:4px;padding:4px 16px;font-weight:800;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#1A7A4A;background:#fff;margin-left:8px;vertical-align:middle;\">Approved</span></div></td></tr> </table> </td> </tr> <tr><td style=\"height:4px;background:linear-gradient(90deg,#0A4A2A,#1A7A4A,#0A4A2A);font-size:0;line-height:0;\">\u00a0</td></tr> <tr> <td style=\"padding:40px 48px;background:#ffffff;\"> <p style=\"font-size:16px;font-weight:600;color:#1A2634;margin-bottom:16px;\">Dear {{ $('Store CRM Data').item.json.Name }},</p> <p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">We are thrilled to inform you that your loan application has been <strong style=\"color:#1A2634;\">approved</strong> by <strong style=\"color:#1A2634;\">Blue Horizon Finance</strong>! \ud83c\udf89 Your trust in us means the world, and we are committed to making your borrowing experience seamless and transparent.</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FAF8F3;border-left:4px solid #1A7A4A;border-radius:0 6px 6px 0;margin:28px 0;\" width=\"100%\"> <tr><td style=\"padding:20px 24px;\"> <p style=\"font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:#718096;margin-bottom:12px;\">\u2705 Approved Loan Details</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Applicant Name</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $('Store CRM Data').item.json.Name }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Approved Loan Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#C9A84C;text-align:right;\">{{ $('Store CRM Data').item.json['Loan Amount'] }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Interest Rate</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">40%</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Interest Payable</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#2E80CE;text-align:right;\">{{ $('Interest and payable for 1M Above(40% interest)').item.json['Interest Rate'] }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Repayment Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $('Interest and payable for 1M Above(40% interest)').item.json['Amount Payable'] }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Disbursement Timeline</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A7A4A;text-align:right;\">2\u20135 Business Days</td></tr> </table> </td></tr> </table> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#EFF8F2;border:1px solid #A8D5B8;border-radius:4px;margin:24px 0;\" width=\"100%\"> <tr><td style=\"padding:16px 20px;font-size:14px;line-height:1.6;color:#1A7A4A;\"> <span style=\"font-size:18px;margin-right:10px;\">\ud83c\udfe6</span>Funds will be disbursed to your registered bank account within <strong>2\u20135 business days</strong>. You will receive a confirmation SMS and email once the transfer is initiated. </td></tr> </table> <p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\"><strong style=\"color:#1A2634;\">Next Steps:</strong> Our team will contact you shortly to complete the final documentation and agreement signing. Please ensure your bank account details on file are correct and that you have a valid ID ready for verification.</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #E2E8F0;margin:28px 0;\" width=\"100%\"><tr><td style=\"padding-top:28px;\"></td></tr></table> <p style=\"font-size:14px;line-height:1.75;color:#4A5568;margin-bottom:20px;\"><strong style=\"color:#1A2634;\">Repayment Reminder:</strong> Please ensure you are familiar with your repayment schedule. Making timely repayments will help maintain a healthy credit profile and may qualify you for preferential rates on future applications.</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:32px 0;\" width=\"100%\">  </table> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:36px;border-top:1px solid #E2E8F0;\" width=\"100%\"> <tr><td style=\"padding-top:24px;font-size:14px;color:#4A5568;line-height:1.7;\"> <div style=\"font-weight:700;color:#1A2634;font-size:15px;\">Loans Disbursement Team</div> <div style=\"color:#718096;font-size:13px;\">Blue Horizon Finance</div> <div>\ud83d\udcde +1 (800) 274-5678 \u00a0|\u00a0 \u2709\ufe0f <a class=\"__cf_email__\" data-cfemail=\"167a7977786556747a63737e79647f6c7978707f78777875733875797b\" href=\"/cdn-cgi/l/email-protection\">[email\u00a0protected]</a></div> <div>\ud83c\udf10 www.bluehorizonfinance.com</div> </td></tr> </table> </td> </tr> <tr> <td style=\"background:#0B1F3A;padding:28px 48px;text-align:center;\"> <p style=\"margin-bottom:10px;\"><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Privacy Policy</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Terms of Service</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Contact Us</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Unsubscribe</a></p> <p style=\"color:rgba(255,255,255,0.4);font-size:11px;line-height:1.7;\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br/>123 Finance Avenue, Suite 500, New York, NY 10001<br/>This email contains confidential information intended only for the named recipient.</p> </td> </tr> </table>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        3280,
+        400
+      ],
+      "id": "4fb31499-841c-4930-b111-0503485eff3d",
+      "name": "Approval Message",
+      "webhookId": "03cc9056-7550-4bc5-9db3-a85b4a418bc9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Declined Offer",
+        "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;margin:0 auto;font-family:'DM Sans',Arial,sans-serif;background:#ffffff;box-shadow:0 8px 40px rgba(11,31,58,0.12);\" width=\"640\">\n<tr>\n<td style=\"background:linear-gradient(135deg,#1A0505 0%,#3D0A0A 60%,#6B1515 100%);padding:40px 48px 36px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding-bottom:28px;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n<td style=\"background:#888;border-radius:8px;width:44px;height:44px;text-align:center;vertical-align:middle;font-size:22px;padding:0 8px;\">\ud83c\udf0a</td>\n<td style=\"padding-left:12px;\">\n<div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:20px;font-weight:700;line-height:1.2;\">Blue Horizon Finance</div>\n<div style=\"color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;\">Trusted Lending Solutions</div>\n</td>\n</tr></table>\n</td></tr>\n<tr><td style=\"padding-bottom:14px;\"><span style=\"display:inline-block;padding:5px 14px;border:1.5px solid rgba(255,150,150,0.4);border-radius:2px;color:#FFB3B3;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;\">Application Outcome</span></td></tr>\n<tr><td><div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:28px;font-weight:600;line-height:1.3;\">Your Loan Application<br/>Has Been Declined <span style=\"display:inline-block;border:3px solid #C0392B;border-radius:4px;padding:4px 16px;font-weight:800;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#C0392B;background:#fff;margin-left:8px;vertical-align:middle;\">Declined</span></div></td></tr>\n</table>\n</td>\n</tr>\n<tr><td style=\"height:4px;background:linear-gradient(90deg,#8B0000,#C0392B,#8B0000);font-size:0;line-height:0;\">\u00a0</td></tr>\n<tr>\n<td style=\"padding:40px 48px;background:#ffffff;\">\n<p style=\"font-size:16px;font-weight:600;color:#1A2634;margin-bottom:16px;\">Dear {{ $('Store CRM Data').item.json.Name }},</p>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">We regret to inform you that following our review process, <strong style=\"color:#1A2634;\">Blue Horizon Finance</strong> has made the decision to <strong style=\"color:#1A2634;\">decline your loan application</strong>. We understand this may be disappointing and we appreciate your patience throughout the process.</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FAF8F3;border-left:4px solid #C0392B;border-radius:0 6px 6px 0;margin:28px 0;\" width=\"100%\">\n<tr><td style=\"padding:20px 24px;\">\n<p style=\"font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:#718096;margin-bottom:12px;\">Application Decision</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Applicant</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $('Store CRM Data').item.json.Name }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Loan Amount Requested</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $('Store CRM Data').item.json['Loan Amount'] }}</td></tr>\n<tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Decision</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#C0392B;text-align:right;\">Declined</td></tr>\n</table>\n</td></tr>\n</table>\n<p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">This decision was made based on the information provided in your application and our current lending policies. Common reasons for decline include insufficient response to our offer within the stipulated timeframe, changes in creditworthiness assessment, or failure to meet documentation requirements.</p>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FFF8E7;border:1px solid #F0D98B;border-radius:4px;margin:24px 0;\" width=\"100%\">\n<tr><td style=\"padding:16px 20px;font-size:14px;line-height:1.6;color:#7A5C00;\">\n<span style=\"font-size:18px;margin-right:10px;\">\ud83d\udca1</span><strong>Future Options:</strong> You may be eligible to reapply after <strong>90 days</strong>. We encourage you to strengthen your financial profile in the interim.\n        </td></tr>\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:32px 0;\" width=\"100%\">\n<tr><td style=\"text-align:center;\"><a href=\"#\" style=\"display:inline-block;padding:14px 40px;background:#0B1F3A;color:#ffffff;text-decoration:none;font-family:'DM Sans',Arial,sans-serif;font-size:14px;font-weight:600;letter-spacing:0.05em;border-radius:3px;\">Contact an Advisor</a></td></tr>\n</table>\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:36px;border-top:1px solid #E2E8F0;\" width=\"100%\">\n<tr><td style=\"padding-top:24px;font-size:14px;color:#4A5568;line-height:1.7;\">\n<div style=\"font-weight:700;color:#1A2634;font-size:15px;\">Credit Decision Team</div>\n<div style=\"color:#718096;font-size:13px;\">Blue Horizon Finance</div>\n<div>\ud83d\udcde +1 (800) 274-5678 \u00a0|\u00a0 \ud83c\udf10 www.bluehorizonfinance.com</div>\n</td></tr>\n</table>\n</td>\n</tr>\n<tr>\n<td style=\"background:#0B1F3A;padding:28px 48px;text-align:center;\">\n<p style=\"margin-bottom:10px;\"><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Privacy Policy</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Terms of Service</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Contact Us</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Unsubscribe</a></p>\n<p style=\"color:rgba(255,255,255,0.4);font-size:11px;line-height:1.7;\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br/>123 Finance Avenue, Suite 500, New York, NY 10001</p>\n</td>\n</tr>\n</table>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        3264,
+        624
+      ],
+      "id": "dbcf06cc-9893-4bb2-818a-0e03464543fa",
+      "name": "Declined Message",
+      "webhookId": "05007600-8cb8-4fb8-9ae1-a6a30bdf82f3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Your Loan Has Been Approved",
+        "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:640px;margin:0 auto;font-family:'DM Sans',Arial,sans-serif;background:#ffffff;box-shadow:0 8px 40px rgba(11,31,58,0.12);\" width=\"640\"> <tr> <td style=\"background:linear-gradient(135deg,#051A0A 0%,#0A3A1A 60%,#1A6B35 100%);padding:40px 48px 36px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr><td style=\"padding-bottom:28px;\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr> <td style=\"background:#C9A84C;border-radius:8px;width:44px;height:44px;text-align:center;vertical-align:middle;font-size:22px;padding:0 8px;\">\ud83c\udf0a</td> <td style=\"padding-left:12px;\"> <div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:20px;font-weight:700;line-height:1.2;\">Blue Horizon Finance</div> <div style=\"color:rgba(255,255,255,0.55);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;\">Trusted Lending Solutions</div> </td> </tr></table> </td></tr> <tr><td style=\"padding-bottom:14px;\"><span style=\"display:inline-block;padding:5px 14px;border:1.5px solid rgba(201,168,76,0.6);border-radius:2px;color:#F0D98B;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;\">\ud83c\udf89 Loan Approved</span></td></tr> <tr><td><div style=\"font-family:'Playfair Display',Georgia,serif;color:#fff;font-size:28px;font-weight:600;line-height:1.3;\">Congratulations \u2014<br/>Your Loan is Approved! <span style=\"display:inline-block;border:3px solid #1A7A4A;border-radius:4px;padding:4px 16px;font-weight:800;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#1A7A4A;background:#fff;margin-left:8px;vertical-align:middle;\">Approved</span></div></td></tr> </table> </td> </tr> <tr><td style=\"height:4px;background:linear-gradient(90deg,#0A4A2A,#1A7A4A,#0A4A2A);font-size:0;line-height:0;\">\u00a0</td></tr> <tr> <td style=\"padding:40px 48px;background:#ffffff;\"> <p style=\"font-size:16px;font-weight:600;color:#1A2634;margin-bottom:16px;\">Dear {{ $('Store CRM Data').item.json.Name }},</p> <p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\">We are thrilled to inform you that your loan application has been <strong style=\"color:#1A2634;\">approved</strong> by <strong style=\"color:#1A2634;\">Blue Horizon Finance</strong>! \ud83c\udf89 Your trust in us means the world, and we are committed to making your borrowing experience seamless and transparent.</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#FAF8F3;border-left:4px solid #1A7A4A;border-radius:0 6px 6px 0;margin:28px 0;\" width=\"100%\"> <tr><td style=\"padding:20px 24px;\"> <p style=\"font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;color:#718096;margin-bottom:12px;\">\u2705 Approved Loan Details</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Applicant Name</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;text-transform:capitalize;\">{{ $('Store CRM Data').item.json.Name }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Approved Loan Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#C9A84C;text-align:right;\">{{ $('Store CRM Data').item.json['Loan Amount'] }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Interest Rate</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">40%</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Interest Payable</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#2E80CE;text-align:right;\">{{ $('Interest and payable for 500-1M(50% interest)').item.json['Interest Rate'] }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Total Repayment Amount</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A2634;text-align:right;\">{{ $('Interest and payable for 500-1M(50% interest)').item.json['Amount Payable'] }}</td></tr> <tr><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;color:#4A5568;\">Disbursement Timeline</td><td style=\"padding:8px 0;border-bottom:1px solid #E2E8F0;font-size:14px;font-weight:600;color:#1A7A4A;text-align:right;\">2\u20135 Business Days</td></tr> </table> </td></tr> </table> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#EFF8F2;border:1px solid #A8D5B8;border-radius:4px;margin:24px 0;\" width=\"100%\"> <tr><td style=\"padding:16px 20px;font-size:14px;line-height:1.6;color:#1A7A4A;\"> <span style=\"font-size:18px;margin-right:10px;\">\ud83c\udfe6</span>Funds will be disbursed to your registered bank account within <strong>2\u20135 business days</strong>. You will receive a confirmation SMS and email once the transfer is initiated. </td></tr> </table> <p style=\"font-size:15px;line-height:1.75;color:#4A5568;margin-bottom:20px;\"><strong style=\"color:#1A2634;\">Next Steps:</strong> Our team will contact you shortly to complete the final documentation and agreement signing. Please ensure your bank account details on file are correct and that you have a valid ID ready for verification.</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-top:1px solid #E2E8F0;margin:28px 0;\" width=\"100%\"><tr><td style=\"padding-top:28px;\"></td></tr></table> <p style=\"font-size:14px;line-height:1.75;color:#4A5568;margin-bottom:20px;\"><strong style=\"color:#1A2634;\">Repayment Reminder:</strong> Please ensure you are familiar with your repayment schedule. Making timely repayments will help maintain a healthy credit profile and may qualify you for preferential rates on future applications.</p> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin:32px 0;\" width=\"100%\">  </table> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"margin-top:36px;border-top:1px solid #E2E8F0;\" width=\"100%\"> <tr><td style=\"padding-top:24px;font-size:14px;color:#4A5568;line-height:1.7;\"> <div style=\"font-weight:700;color:#1A2634;font-size:15px;\">Loans Disbursement Team</div> <div style=\"color:#718096;font-size:13px;\">Blue Horizon Finance</div> <div>\ud83d\udcde +1 (800) 274-5678 \u00a0|\u00a0 \u2709\ufe0f <a class=\"__cf_email__\" data-cfemail=\"167a7977786556747a63737e79647f6c7978707f78777875733875797b\" href=\"/cdn-cgi/l/email-protection\">[email\u00a0protected]</a></div> <div>\ud83c\udf10 www.bluehorizonfinance.com</div> </td></tr> </table> </td> </tr> <tr> <td style=\"background:#0B1F3A;padding:28px 48px;text-align:center;\"> <p style=\"margin-bottom:10px;\"><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Privacy Policy</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Terms of Service</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Contact Us</a><a href=\"#\" style=\"color:rgba(255,255,255,0.55);text-decoration:none;margin:0 10px;font-size:11px;\">Unsubscribe</a></p> <p style=\"color:rgba(255,255,255,0.4);font-size:11px;line-height:1.7;\">\u00a9 2025 Blue Horizon Finance. All rights reserved.<br/>123 Finance Avenue, Suite 500, New York, NY 10001<br/>This email contains confidential information intended only for the named recipient.</p> </td> </tr> </table>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2784,
+        256
+      ],
+      "id": "3eef1605-94d9-45df-9f3e-7a702a30fb64",
+      "name": "Loan Approval Message",
+      "webhookId": "93da3508-b013-4464-b688-9ae6892eebbe",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Store CRM Data').item.json.Email }}",
+        "subject": "Declined Offer",
+        "emailType": "text",
+        "message": "=Hi  {{ $('Store CRM Data').item.json.Name }},\nWe noted you declined the offer. Hopefully we can work togetehr in the future",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2768,
+        416
+      ],
+      "id": "b8dd16a9-b7bc-4adb-88da-ce5f6adca28a",
+      "name": "Decline Loan",
+      "webhookId": "05007600-8cb8-4fb8-9ae1-a6a30bdf82f3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "app1P4VY1vJdqSJty",
+          "mode": "list",
+          "cachedResultName": "Blue Horizon Finance",
+          "cachedResultUrl": "https://airtable.com/app1P4VY1vJdqSJty"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblYAc6rlrp3KNUqG",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/app1P4VY1vJdqSJty/tblYAc6rlrp3KNUqG"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Approved Loan Amount": "={{ $('Interest and payable for 500-1M(50% interest)').item.json['Loan figure needed'] }}",
+            "Interest Rate": 50,
+            "Total Interest Payable": "={{ $('Interest and payable for 500-1M(50% interest)').item.json['Interest Rate'] }}",
+            "Total Repayment Amount": "={{ $('Interest and payable for 500-1M(50% interest)').item.json['Amount Payable'] }}",
+            "Disbursement Timeline": "2-3 business days",
+            "Applicant Name": "={{ $('Store CRM Data').item.json.Name }}"
+          },
+          "matchingColumns": [
+            "Applicant Name"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Applicant Name",
+              "displayName": "Applicant Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Approved Loan Amount",
+              "displayName": "Approved Loan Amount",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Interest Rate",
+              "displayName": "Interest Rate",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Total Interest Payable",
+              "displayName": "Total Interest Payable",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Total Repayment Amount",
+              "displayName": "Total Repayment Amount",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Disbursement Timeline",
+              "displayName": "Disbursement Timeline",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2992,
+        256
+      ],
+      "id": "e5b04ee1-875f-47c0-9c7e-6a8fb51af8dc",
+      "name": "Enter Client Data in CRM",
+      "alwaysOutputData": true,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Logic processing for Interest and Payable above 1M\n\n",
+        "height": 704,
+        "width": 1888
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1648,
+        1072
+      ],
+      "typeVersion": 1,
+      "id": "9a98e888-edf7-4947-ae33-7370655e8dc8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Logic for interest and payable below 1M",
+        "height": 848,
+        "width": 2032,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1568,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "013b365e-cc81-4955-b2b9-09f1659dfeec",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Is Salary range 0-500k": {
+      "main": [
+        [
+          {
+            "node": "Customer Not Eligible",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Calculate Interest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store CRM Data": {
+      "main": [
+        [
+          {
+            "node": "Send welcome email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send welcome email": {
+      "main": [
+        [
+          {
+            "node": "Is Salary range 0-500k",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Interest": {
+      "main": [
+        [
+          {
+            "node": "Interest and payable for 500-1M(50% interest)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Interest and payable for 1M Above(40% interest)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response1": {
+      "main": [
+        [
+          {
+            "node": "response/no response1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "approve/decline loan1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Declined Email1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "response/no response1": {
+      "main": [
+        [
+          {
+            "node": "approve/decline loan1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send message and wait for response2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Interest and payable for 1M Above(40% interest)": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "response": {
+      "main": [
+        [
+          {
+            "node": "Accepted/Declined",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Approval/Decline Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Accepted/Declined": {
+      "main": [
+        [
+          {
+            "node": "Loan Approval Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Decline Loan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "approve/decline loan": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Declined Email2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Store CRM Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Response Exists?2": {
+      "main": [
+        [
+          {
+            "node": "approve/decline loan",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Response Exists?": {
+      "main": [
+        [
+          {
+            "node": "Approve/Decline",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Interest and payable for 500-1M(50% interest)": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approval/Decline Message": {
+      "main": [
+        [
+          {
+            "node": "Response Exists?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approve/Decline": {
+      "main": [
+        [
+          {
+            "node": "Approval Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Declined Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loan Approval Message": {
+      "main": [
+        [
+          {
+            "node": "Enter Client Data in CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enter Client Data in CRM": {
+      "main": [
+        [
+          {
+            "node": "Send a message4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response2": {
+      "main": [
+        [
+          {
+            "node": "Response Exists?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "5e85b33a-70f5-4850-8a4a-cfd45c86cdf3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b6b980582e7e8e2cc8883eac6b799c04b0c4151e2d2eb383d74d87b6f381c4c4"
+  },
+  "id": "HOvnOOJz1EggbwnB",
+  "tags": []
+}

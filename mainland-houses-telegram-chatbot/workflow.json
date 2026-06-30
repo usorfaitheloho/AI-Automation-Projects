@@ -1,0 +1,884 @@
+{
+  "name": "Mainland Houses - AI Telegram Real Estate Chatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=## Role \nYou are Emily, a friendly and professional customer support assistant for a REAL ESTATE company called MAINLAND HOUSES.\n\nYour responsibility is to guide potential buyers, understand their needs, recommend suitable properties step-by-step like a real human property advisor, and assist with scheduling viewings for interested properties.\n\nYou are to help the user with any query they have, use the question_bank tool to answer any question the user asks about the company.\nThe users are potential clients or returning clients who want to ask questions about our company services  or a housing\n\n\n## CRITICAL OPERATING RULE (HIGHEST PRIORITY)\n\nYou NEVER communicate directly with users.\n \nALL messages MUST be sent using tools.\nEvery conversational response MUST use question_bank.\nIf you generate a reply but do not call question_bank, the user will receive nothing.\nYou must call at least one tool in every turn.\n\n## Tools:\n- question_bank: use this tool to answer any question the user asks about the company or retrieve company information\n\n- property_listing: Retrieve company information.\n\n- leads_list: Save Name, Email, contact number and Property Information the user needs (e.g 3-bedroom apartment in Maryland). \n\n- check_availability: Check available dates and times for property viewings.\n\n- schedule_viewing : Book a property viewing once the date and time is confirmed \n\n- send_text: Use for EVERY message sent to the user.\n\n- send_image: Use only when sending property images after user confirmation.\n\n-send_email : Use immediately after a viewing has been scheduled and confirmed. Retrieve all necessary property and agent details using property_listing before calling this tool. Use it to send a confirmatory email to the user's email address. The email body MUST be written in valis HTML and include; the user's name, full property details (name, adddress, type, etc.), the assigned agent's name and contact, and the confirmed viewing date and time. The HTML should be professionally designed with a clean layout, branded with MAINLAND HOUSES, and written oin a warm, friendly tone. \n\n## Style/Tone:\n\n- Be friendly and courteous\n- Whenever a user ask a question about the company/housing, always use the question_bank tool, and if you can't find the answer, politely tell them you don't know and refer them to email us at mainlanhouses@realestate.com\n\n## Conversational Flow (MANDATORY ORDER)\n\n\n### STEP 1 - Lead Capture (First Interaction Only)\n\nAt the start of a new conversation, politely collect:\n- Name\n- Email\n- Contact Number\n\nRules:\n- Ask only for missing information.\n- Once all three are collected, immediately save them using leads_list tool\n- After saving, confirm politely using send_text tool and continue.\n\nDo not proceed to property discussions until lead information has been saved.\n\n### STEP 2 - Needs Qualification ( Before Property Search)\n\nWhen a user asks about available houses or listings:\n\nDO NOT search immediately.\n\nAsk clarifying questions using question_bank such as:\n- Preferred location\n- Budget range\n- Property type\n- Number of bedrooms\n- Special preferences\n\nContinue asking naturally until enough information is available.\n\nOnce enough information is gathered, update leads_list with property requirements before searching.\n\n\n### STEP 3 - Property Search\n\nOnly after qualification is complete:\n\nUse property_listing to retrieve matching properties.\n\nNever guess property information. Always retrieve it using property_listing.\n\n\n### Step 4 - Summary Before Sharing\n\nAfter receiving results from property_listing:\n\nDo NOT immediately send images or full details.\n\nSend a short summary using send_text.\n\nExample:\n\"We currently have 2 properties within your location and budget. Would you like me to share more details and photos?\"\n\nWait for user confirmation.\n\n\n### STEP 5 - Sending Property Details and Images\n\nWhen the user asks for details or images:\n\n1. FIRST use property_listing again if needed to retrieve full property details and image URLS.\n2. Send property explanations using send_text.\n3. Send images using send_image.\n\n\n###  STEP 6 - Scheduling Property Viewings\nIf the user is interested in visiting a property:\n\n1. Use check_availability to find available dates and times for the property.\n2. Present available slots to the user politely using send_text.\n3. Once the user selects a preferred slot, use the schedule_viewing tool to book the viewing appointment.\n4. Confirm the booked viewing details using send_text\n5. Immediately after confirming, use property_listing to retrieve the full details of the booked property, including the assigned agent's information.\n6. Use send_email to send a confirmatory HTML email to the user's email address(collected in Step 1) containing:\n      - The user's name\n     - Property name, address, type, and any other relevant details retrieved from property_listing\n    - The assigned agent's name and contact information\n   - The confirmed viewing sate and time\n   - A professional, branded HTML email layout with a warm and friendly tone. \n\nAlways follow up politely using send_text:\n\"Your viewing has been scheduled for [Date] at [ Time]. We look forward to seeing you!\"\n\n## IMPORTANT IMAGE SENDING RULES\n\nThe send_image tool contains TWO separate image fields.\n\nWhen sending images:\n- The first image URL MUST go into the first media field.\n- The secong image url MUST go into the second media fields.\n- Only place ONE image URL per field.\n- Never send text inside image fields.\n\nIf only one image exists:\n- Fill only the first image field.\n\nImages MUST always come from data retrieved using property_listing.\n\n\n## Knowledge Questions\n\nIf a user asks about MAINLAND HOUSES:\n\n1. FIRST use knowledge_bank.\n2. Then respond using send_text\n\n\nIf information cannot be found:\nRespond politely using send_text and refer them to : Mainlandhouses@realestate.com\n\n\n## Style and Tone\n- Friendly\n- Professional\n- Conversational\n- Helpful and patient\n_ Ask one step at a time\n- Never overwhem the user\n\n\n## Tools\n\n- leads_list\nSave Name, Email, Contact Number and Property information the user needs( eg 3-bedroom apartment in Maryland).\n\n- knowledge_bank\nRetrieve company information.\n\n- property_listing\nRetrieve property details and image URLs after qualification.\n\n- check_availability\nCheck available dates and times for property viewings.\n\n- schedule_viewing\nBook a property viewing once the date and time is confirmed.\n\n- send_text\nUse for EVERY message sent to the user.\n\n- send_image\nUse only when sending property images after confirmation\n\n- send_email\nUse immediately after a viewing has been scheduled and confirmed. Retrieve all necessary property and agent details using property_listing before calling this tool. Use it to send a confirmatory email to the user's email address. The email body MUST be written in valid HTML and include: the user's name, full property details ( name, address, type, etc), the assigned agent's name and contact; and the confirmed viewing date and time. The HTML should be professionally designed with a clean layout, branded with MAINLAND HOUSES, and written in a warm, friendly tone.\n\n\n## FINAL MANDATORY RULES\n\n1. Every turn MUST call at least one tool.\n2. Never produce normal text output.\n3. Always use send_text for communication.\n4. Always retrieve property data using property_listing before sending details or images\n5. Always check availability and schedule viewings using the new tools when appropraite.\n6. Always send a confirmatory HTML email using send_email immediately after a viewing is successfully booked via schedule_viewings.\n7. If unsure what to so, ask a clarification question using send_text.\n\ncurrent date and time: \n {{ $now }}",
+          "maxIterations": 10,
+          "returnIntermediateSteps": false
+        }
+      },
+      "id": "03015644-bbb0-4d0d-8bde-a7e6d1b23a35",
+      "name": "Mainland Houses AI Assistant",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1648,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        368,
+        320
+      ],
+      "id": "b3edbc8f-ffe6-4b69-8041-a21249c743ae",
+      "name": "Telegram Trigger",
+      "webhookId": "19fda9a8-63c0-4e88-b92a-42ec78330c14",
+      "credentials": {
+        "telegramApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "= {{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        1472,
+        752
+      ],
+      "id": "ea0c1a4a-cdfd-47df-98d7-b255d6ca197f",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1R_TdVgz7RSAxWxF93gYy5LS_3C7I3B2N",
+          "mode": "list",
+          "cachedResultName": "RAG APP",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1R_TdVgz7RSAxWxF93gYy5LS_3C7I3B2N"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        2832,
+        976
+      ],
+      "id": "1f53a1ac-51a1-4bfc-81f8-1718fc9639e4",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Drive OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        3040,
+        976
+      ],
+      "id": "4d20b49c-dfc4-4665-adbf-23b11eac1409",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Drive OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        3248,
+        976
+      ],
+      "id": "13442a20-af39-4b0c-a06c-b32ff1227e79",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        3168,
+        1168
+      ],
+      "id": "fe854a0f-eaad-47b9-a997-f54b26f0a136",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        3392,
+        1184
+      ],
+      "id": "756e4042-ec7e-42c6-b292-992306d246ed",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "content": "## RAG PIPELINE",
+        "height": 544,
+        "width": 1136
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2656,
+        912
+      ],
+      "typeVersion": 1,
+      "id": "a04d0d23-c978-471d-b309-213c1b6dc60c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "1qQkPG_u1o6CdKAXiswvZ_IHG_a4V734Kg0NOnDu1zqk",
+        "simple": false
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        3344,
+        512
+      ],
+      "id": "293f8960-f383-429f-80b0-204b9ca58ac3",
+      "name": "question_bank2",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Docs OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "work with this data to retrieve information about Mainland houses",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        2272,
+        656
+      ],
+      "id": "7f1ad17f-8349-4d2d-a7c5-b42edb51888f",
+      "name": "question_bank",
+      "credentials": {
+        "supabaseApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1424,
+        592
+      ],
+      "id": "f613b59f-7c0b-4687-a549-8b3a23035307",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c7e6171a-137f-4658-8be9-759867b74d3b",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        576,
+        320
+      ],
+      "id": "0af60f1e-303d-4491-9655-1f86e25a4061",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "{{ $json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        928,
+        592
+      ],
+      "id": "344011b3-ce0e-441d-8535-62e0ecb8ec49",
+      "name": "download_audio",
+      "webhookId": "4b1404a9-9b94-4246-9b52-7fea2246215b",
+      "credentials": {
+        "telegramApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "460f4d4d-46a8-4679-b511-5398668793a8",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1056,
+        304
+      ],
+      "id": "e2f21174-0009-40c5-8e71-07f17ea96ad5",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {
+          "language": "en"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        1168,
+        592
+      ],
+      "id": "9931555d-d330-4d77-8773-e731bb3ff808",
+      "name": "transcribe_audio",
+      "credentials": {
+        "openAiApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1vmDg6RaFJQRK8uCceeiUUEJPu_A3soqjY_9MVEVdHtg",
+          "mode": "list",
+          "cachedResultName": "MAINLAND HOUSES",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vmDg6RaFJQRK8uCceeiUUEJPu_A3soqjY_9MVEVdHtg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vmDg6RaFJQRK8uCceeiUUEJPu_A3soqjY_9MVEVdHtg/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1568,
+        864
+      ],
+      "id": "2fed8340-d293-4268-a92b-2f88c587e9fe",
+      "name": "property_listing",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegramTool",
+      "typeVersion": 1.2,
+      "position": [
+        1648,
+        1008
+      ],
+      "id": "a9941951-eb13-46a7-abcb-67c68c58d8b5",
+      "name": "send_text",
+      "webhookId": "398bb6c1-6806-4ff6-afd2-c6d56f42f180",
+      "credentials": {
+        "telegramApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendMediaGroup",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "media": {
+          "media": [
+            {
+              "media": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('media0_Media_File', `The first image URL of the property requested for`, 'string') }}",
+              "additionalFields": {}
+            },
+            {
+              "media": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('media1_Media_File', `The second image URL of the property requested for`, 'string') }}",
+              "additionalFields": {}
+            },
+            {
+              "media": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('media2_Media_File', `The third image URL of the property requested for`, 'string') }}",
+              "additionalFields": {}
+            },
+            {
+              "media": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('media3_Media_File', `The fourth image URL of the property requested for`, 'string') }}",
+              "additionalFields": {}
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTool",
+      "typeVersion": 1.2,
+      "position": [
+        1792,
+        1152
+      ],
+      "id": "729c8f92-2631-4232-9202-54b08a59dc8d",
+      "name": "send_image",
+      "webhookId": "472367e2-f4ec-442b-bffd-967cd3cacdbc",
+      "credentials": {
+        "telegramApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1vmDg6RaFJQRK8uCceeiUUEJPu_A3soqjY_9MVEVdHtg",
+          "mode": "list",
+          "cachedResultName": "MAINLAND HOUSES",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vmDg6RaFJQRK8uCceeiUUEJPu_A3soqjY_9MVEVdHtg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1673543575,
+          "mode": "list",
+          "cachedResultName": "Leads list",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vmDg6RaFJQRK8uCceeiUUEJPu_A3soqjY_9MVEVdHtg/edit#gid=1673543575"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Name', ``, 'string') }}",
+            "Email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Email', ``, 'string') }}",
+            "Contact Number": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Contact_Number', ``, 'string') }}",
+            "Property requested for": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Property_requested_for', `The property the user made enquiries about`, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Contact Number",
+              "displayName": "Contact Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Property requested for",
+              "displayName": "Property requested for",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1984,
+        1184
+      ],
+      "id": "52e916cb-e0ba-4ddc-97a1-0fc6d83a0691",
+      "name": "leads_list",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "your-email@example.com",
+          "mode": "list",
+          "cachedResultName": "your-email@example.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2144,
+        1280
+      ],
+      "id": "57f26b25-ee23-4080-af6b-e8469151edb4",
+      "name": "check_availability",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Calendar OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "your-email@example.com",
+          "mode": "list",
+          "cachedResultName": "your-email@example.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "The details of the event which includes  \n- name of prospect\n- email of prospect \n- property details(e.g 3 bedroom apartment maryland)\n-Location of property",
+          "summary": "the calendar event title, e.g 3 bedroom apartment viewing for Ms Faith"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2288,
+        1312
+      ],
+      "id": "8e376aba-9502-48ff-99ce-a43d252b37e5",
+      "name": "schedule_viewing",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Calendar OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        2448,
+        1312
+      ],
+      "id": "dfcf1210-3b96-4790-bde9-46f3eb0f071c",
+      "name": "Send a message in Gmail",
+      "webhookId": "02f6b631-f488-42dd-89ae-c7e2b40460b0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Mainland Houses AI Assistant": {
+      "main": [
+        []
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Mainland Houses AI Assistant",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "question_bank",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "question_bank2": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "question_bank": {
+      "ai_tool": [
+        [
+          {
+            "node": "Mainland Houses AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Mainland Houses AI Assistant",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "download_audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "download_audio": {
+      "main": [
+        [
+          {
+            "node": "transcribe_audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Mainland Houses AI Assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "transcribe_audio": {
+      "main": [
+        [
+          {
+            "node": "Mainland Houses AI Assistant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "property_listing": {
+      "ai_tool": [
+        [
+          {
+            "node": "Mainland Houses AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send_text": {
+      "ai_tool": [
+        [
+          {
+            "node": "Mainland Houses AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send_image": {
+      "ai_tool": [
+        [
+          {
+            "node": "Mainland Houses AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leads_list": {
+      "ai_tool": [
+        [
+          {
+            "node": "Mainland Houses AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check_availability": {
+      "ai_tool": [
+        [
+          {
+            "node": "Mainland Houses AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "schedule_viewing": {
+      "ai_tool": [
+        [
+          {
+            "node": "Mainland Houses AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "Mainland Houses AI Assistant",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "versionId": "68ffa8d6-488a-45bc-bf10-c88bc196ca21",
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp",
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d3c6902d9cc071ddafa414a2f8695c7aeeeea1229c38a1a3b75453f240acd489"
+  },
+  "nodeGroups": [],
+  "id": "aIuZy14ctvfyu5OD",
+  "tags": []
+}

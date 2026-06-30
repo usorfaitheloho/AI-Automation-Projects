@@ -1,0 +1,579 @@
+{
+  "name": "Email redirection workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "modelName": "models/gemini-flash-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        432
+      ],
+      "id": "e3c0706d-c4ab-4c14-8cd2-8cb9de00caf2",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Gemini(PaLM) Api account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AGC0U023X",
+          "mode": "list",
+          "cachedResultName": "finance-department-team"
+        },
+        "text": "=*Sender* - {{ $json.sender }}\n*Subject* - {{ $json.subject }}\n*Body*  : {{ $json.body }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        272,
+        352
+      ],
+      "id": "b9ef7ab6-a7ed-4249-acef-514839300c0c",
+      "name": "Send a message",
+      "webhookId": "2b2d6050-c1cc-45a2-8307-8b178b7d7481",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Slack OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AH9MJHFB2",
+          "mode": "list",
+          "cachedResultName": "hr-department-team"
+        },
+        "text": "=*Sender* - {{ $json.sender }} *Subject* - {{ $json.subject }} *Body*  : {{ $json.body }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        256,
+        0
+      ],
+      "id": "03eaf929-329b-4b0a-ba37-01cd7bf49c81",
+      "name": "Send a message2",
+      "webhookId": "499ec37e-6ae8-414f-aec7-ff349d601ce4",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Slack OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AH9MJHFB2",
+          "mode": "list",
+          "cachedResultName": "hr-department-team"
+        },
+        "text": "=*Sender* - {{ $('Department Router').item.json.sender }}\n*Subject* - {{ $('Department Router').item.json.subject }}\n*Body*  : {{ $('Department Router').item.json.body }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        256,
+        176
+      ],
+      "id": "927acc45-e189-4182-a245-dc1db139c2a9",
+      "name": "Send a message3",
+      "webhookId": "e929b7e1-d8e6-40a9-860d-08bbaba3fce6",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Slack OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return{\n  sender: $input.first().json.From,\n  subject: $input.first().json.Subject ||\"\",\n  body:  $input.first().json.snippet || \"\"\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1040,
+        208
+      ],
+      "id": "3f73b459-a7d2-400d-894f-dfdff75d5613",
+      "name": "Clean Data"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AGC0U023X",
+          "mode": "list",
+          "cachedResultName": "finance-department-team"
+        },
+        "text": "=*Sender* - {{ $json.sender }}\n*Subject* - {{ $json.subject }}\n*Body*  : {{ $json.body }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        256,
+        528
+      ],
+      "id": "27569466-ac22-4218-8f78-037c3094d79b",
+      "name": "Send a message1",
+      "webhookId": "2b2d6050-c1cc-45a2-8307-8b178b7d7481",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Slack OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=body:  {{ $json.body }}, subject: {{ $json.subject }}, sender: {{ $json.sender }}",
+        "options": {
+          "systemMessage": "you are Richard, an email classification assistant.\n\n##Task\n\nyour task is to analyze incoming emails and determine which department they belong to.\n\nThe possible department are strictly: \u201cFinance\u201d, \u201cHR\u201d, \u201cMarketing\u201d, or \u201cTechnical\u201d.\n\nReturn the result only in a valid JSON object with these keys:\n\n- department: one of the four departments\n- subject: same subject text received\n- body: same body text received\n- sender: same sender text received\n\nDo not include any explanations or extra text. Return JSON only"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -832,
+        208
+      ],
+      "id": "acd0377a-bffe-4a0b-9277-7fa9eaed7ab1",
+      "name": "Email Classifier Agent"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1232,
+        208
+      ],
+      "id": "cb627e84-df02-4b23-b827-cc07d419b518",
+      "name": "Email from Customer",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return JSON.parse($input.first().json.output)"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        208
+      ],
+      "id": "05d85802-4dac-49d8-931c-11e4904a7321",
+      "name": "Json Parser"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5d83edcf-87e2-4245-a25f-97a3a74240c2",
+                    "leftValue": "={{ $json.department }}",
+                    "rightValue": "Technical",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Technical department route"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ca513a4f-917b-469c-aab7-d260e4afa5f1",
+                    "leftValue": "={{ $json.department }}",
+                    "rightValue": "HR",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "HR department route"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4bea6414-a863-4302-a7e9-51380ce66799",
+                    "leftValue": "={{ $json.department }}",
+                    "rightValue": "Marketing",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Marketing department route"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "a8f8329c-7ca2-4cf3-a9b9-db892622177b",
+                    "leftValue": "={{ $json.department }}",
+                    "rightValue": "Finance",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Finance department route"
+            }
+          ]
+        },
+        "options": {
+          "ignoreCase": true
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -192,
+        176
+      ],
+      "id": "069367f1-df53-49cc-a00d-3b6b3e62e3ae",
+      "name": "Department Router"
+    },
+    {
+      "parameters": {
+        "sendTo": "test-recipient@example.com",
+        "subject": "={{ $('Json Parser').item.json.subject }}",
+        "emailType": "text",
+        "message": "={{ $('Clean Data').item.json.body }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Clean Data').item.json.sender }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "454c47b1-62c0-4ae9-bc03-012abf0e2128",
+      "name": "Technical email",
+      "webhookId": "01147d76-9925-44e4-8d33-804d0fb131a7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "test-recipient@example.com",
+        "subject": "={{ $('Json Parser').item.json.subject }}",
+        "emailType": "text",
+        "message": "={{ $('Clean Data').item.json.body }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Clean Data').item.json.sender }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        176
+      ],
+      "id": "cd12b121-1fb3-4453-898a-d76873060aaa",
+      "name": "HR email",
+      "webhookId": "01147d76-9925-44e4-8d33-804d0fb131a7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "test-recipient@example.com",
+        "subject": "={{ $('Json Parser').item.json.subject }}",
+        "emailType": "text",
+        "message": "={{ $('Clean Data').item.json.body }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Clean Data').item.json.sender }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        352
+      ],
+      "id": "99c5a0fb-2fd4-4f01-906b-70b5a16e0d4b",
+      "name": "marketing email",
+      "webhookId": "01147d76-9925-44e4-8d33-804d0fb131a7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "test-recipient@example.com",
+        "subject": "={{ $('Json Parser').item.json.subject }}",
+        "emailType": "text",
+        "message": "={{ $('Clean Data').item.json.body }}",
+        "options": {
+          "appendAttribution": false,
+          "replyTo": "={{ $('Clean Data').item.json.sender }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        528
+      ],
+      "id": "d24a4971-f68c-41f8-b66a-eebf104a65c3",
+      "name": "finance email",
+      "webhookId": "01147d76-9925-44e4-8d33-804d0fb131a7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Email Classifier Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean Data": {
+      "main": [
+        [
+          {
+            "node": "Email Classifier Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Classifier Agent": {
+      "main": [
+        [
+          {
+            "node": "Json Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email from Customer": {
+      "main": [
+        [
+          {
+            "node": "Clean Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Json Parser": {
+      "main": [
+        [
+          {
+            "node": "Department Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Department Router": {
+      "main": [
+        [
+          {
+            "node": "Technical email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HR email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "marketing email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "finance email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Technical email": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HR email": {
+      "main": [
+        [
+          {
+            "node": "Send a message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "marketing email": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "finance email": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5310c574-e8cf-4ad5-b77d-2ee5c39df134",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c126c1a8669241d496074a1eb680d7c1e1ed3ef05e04b3a852763c41e457e9be"
+  },
+  "id": "Ip0KmnIRrR2Q3BeM",
+  "tags": []
+}

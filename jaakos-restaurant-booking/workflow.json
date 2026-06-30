@@ -1,0 +1,476 @@
+{
+  "name": "Jaakos restaurant",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "jaako-restaurant-table-availability",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": false
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        304,
+        64
+      ],
+      "id": "cd1427d5-49ca-43cf-b966-26fed944f569",
+      "name": "Webhook",
+      "webhookId": "363f22da-ff4c-46cb-a37b-1131e9406e0c"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=requested time :  {{ $json.body.requested_time }}",
+        "options": {
+          "systemMessage": "=You are a reservation availability checker. Your job is to get the requested time and use the calender to check the availability for the customer.\n\nthe current time now is {{ $now }}\n\nthe requested time for the table reservation by the customer is : {{ $json.body.requested_time }}\n\nCalender data:\nWorking hours 11am - 11pm\n Maximum Length of each slot: 3 hours\n\nBooking Process\n- Check if the customer's requested time is available using the calendar\n-If the time is available, let the AI model know & confirm\n-If the time is unavailable, suggest up to 2 alternative slots close to the requested time, by checking the availability again\n-If there are no slots upon rechecking within that day, search the next weekday from the current time and provide alternative slots.\n\nResponse & Output: {\n-If the requested time is available confirm it by saying something like:\ne.g., the requested time of 10am on June 22nd is available, suggest up to 2 alternative slots closest to the requested time.\n\n-If you have found no availability or unavailability in the requested time, suggest up to 2 alternative slots closest to the requested time.\n\n-If no slots exist within the day suggest 3 more times the next weekday\n}\n\nImportant notes:\n-You must not output your result in the past, always check availability in the future, use the current time you have received and the requested data to help make that decision.\n-Your ability to follow these steps precisely is very crucial and can impact the business reputation"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        512,
+        64
+      ],
+      "id": "42ce6670-5ef2-4ac1-ba13-9cec3b75b531",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "your-email@example.com",
+          "mode": "list",
+          "cachedResultName": "your-email@example.com"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        672,
+        272
+      ],
+      "id": "f0707564-80ca-4529-90de-5673c927b012",
+      "name": "calender",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Calendar OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        864,
+        64
+      ],
+      "id": "e89cdc5b-5177-4a91-b266-151e21647c88",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "b58cd48e-88de-4281-9653-04d8ea629dfb",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        480,
+        656
+      ],
+      "id": "f1b5b2db-e28c-47c1-9477-7ae19935e991",
+      "name": "Webhook1",
+      "webhookId": "b58cd48e-88de-4281-9653-04d8ea629dfb"
+    },
+    {
+      "parameters": {
+        "content": "## check availability workflow\n**Double click** to edit me. [Guide](https://docs.n8n.io/workflows/components/sticky-notes/)",
+        "height": 448,
+        "width": 1312
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "bdf4d312-94df-4584-98c2-7f5c6e86a3ed",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=booking time : {{ $json.body.booking_time }}\nfull name : {{ $json.body.full_name }}\nemail: {{ $json.body.email }}\nguest number : {{ $json.body.guests_number }}\nphone number :  {{ $json.body.phone_number }}",
+        "options": {
+          "systemMessage": "=You are an appointment booking AI Agent. Your job is to use the \"booking\" tool to get the details of the customer and create an event/booking for a table reservation for the customer afterwards you then save it in the crm.\n\nthe current time now is {{ $now }}\nthe confirmed time for the table reservation is : {{ $json.body.booking_time }}\n\nReservation durations will be three hours. Simply add three hours to the confirmed time, use the confirmed time as the start time and then simply add three hours onto the confirmed time to get the end time.\n\nIf the event has been scheduled please provide your output in this format:\n\nOutput:\n\nHey there, the table reservation for July 10th, 2025, at 11am for a guest of 4 has been scheduled we will see you then.\n\n## Post booking Process\nAfter you have scheduled the appointment, you must follow this post-booking process:\n\n1. Use the \"send_email\" tool to send a confirmation email to the customer about their booking. \nNote: Always write the emails in HTML format\n\n2. Log the Customer's Full name, phone number, guest number, email, and booking date and time using the \"update\" tool"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        896,
+        656
+      ],
+      "id": "bc994f27-ef86-4c84-99a3-fccd7ca3bc23",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "your-email@example.com",
+          "mode": "list",
+          "cachedResultName": "your-email@example.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "=Guest number: {{ $json.body.guests_number }}\nPhone number : {{ $json.body.phone_number }}\nEmail : {{ $json.body.email }}",
+          "summary": "=Table Reservation for  {{ $json.body.full_name }} at {{ $json.body.booking_time }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1200,
+        992
+      ],
+      "id": "2fec71d3-60ac-4cec-8df0-640982e81457",
+      "name": "booking",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Calendar OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.body.email }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        1056,
+        1040
+      ],
+      "id": "56a57c24-09e4-4fde-afec-a80368b77bd9",
+      "name": "send_email",
+      "webhookId": "d93fb9f0-6410-4ac5-9118-8a886db89084",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        688,
+        656
+      ],
+      "id": "00a37999-58e1-4c83-bf39-bf6498e62135",
+      "name": "Wait",
+      "webhookId": "a1a683b6-da21-484e-baf7-a565ba2c22fd"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1X0nqgMgjW0ejsRFAi6oaHQeiWYElatcHPL_APPT2k6c",
+          "mode": "list",
+          "cachedResultName": "Taisty restaurant table reservation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1X0nqgMgjW0ejsRFAi6oaHQeiWYElatcHPL_APPT2k6c/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1X0nqgMgjW0ejsRFAi6oaHQeiWYElatcHPL_APPT2k6c/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone number": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('phone_number', ``, 'string') }}",
+            "cusstomer fullname": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('cusstomer_fullname', ``, 'string') }}",
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', ``, 'string') }}",
+            "guest number": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('guest_number', ``, 'string') }}",
+            "booking date": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('booking_date', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "Name of Customer"
+          ],
+          "schema": [
+            {
+              "id": "cusstomer fullname",
+              "displayName": "cusstomer fullname",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "phone number",
+              "displayName": "phone number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "guest number",
+              "displayName": "guest number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "booking date",
+              "displayName": "booking date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1264,
+        816
+      ],
+      "id": "47fbd3d3-1ed3-487d-9da9-3dfa40c32027",
+      "name": "update",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        384,
+        272
+      ],
+      "id": "532a1b75-b941-4cc5-9a55-457b4f145954",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Gemini(PaLM) Api account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        768,
+        864
+      ],
+      "id": "015ee369-ceca-4388-9b83-c25fd7e7c434",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YOUR_CREDENTIAL_ID",
+          "name": "Google Gemini(PaLM) Api account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Book reservation workflow\n",
+        "height": 544,
+        "width": 1280,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        304,
+        592
+      ],
+      "typeVersion": 1,
+      "id": "a79cdbdc-23ab-4736-b4bd-d6b1d09f14d5",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "calender": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "booking": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send_email": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "c14d494c-f0ae-461d-a036-45bc213c7f4a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c126c1a8669241d496074a1eb680d7c1e1ed3ef05e04b3a852763c41e457e9be"
+  },
+  "id": "XoRdYUGqRmusGM4s",
+  "tags": []
+}
