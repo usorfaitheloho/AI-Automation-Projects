@@ -2,7 +2,7 @@
 
 An n8n workflow that automatically reads incoming emails, classifies them using AI, and routes them to the correct department via Slack notification and Gmail forwarding.
 
-![Email routing workflow diagram](./diagram.svg)
+![Email routing workflow diagram](./560561917-9f3f24da-83b5-4eb4-932d-8a72c4f93f42.png)
 
 ## Overview
 
