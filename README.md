@@ -1,6 +1,6 @@
 # AI Automation Projects
 
-A collection of production-style AI and workflow automation builds, designed and shipped for real clients across finance, real estate, hospitality, and local services. Built primarily in **n8n**, combining LLMs (Google Gemini, OpenAI), vector search, CRM tooling, and messaging platforms to automate workflows that would otherwise require manual staff time.
+A collection of production AI and workflow automation builds, designed and shipped for real clients across finance, real estate, hospitality, and local services. Built primarily in **n8n**, combining LLMs (Google Gemini, OpenAI), vector search, CRM tooling, and messaging platforms to automate workflows that would otherwise require manual staff time.
 
 Each folder is a self-contained project with its own README and exported `workflow.json` (importable directly into n8n).
 
